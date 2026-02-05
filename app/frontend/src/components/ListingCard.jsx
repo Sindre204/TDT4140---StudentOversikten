@@ -2,6 +2,7 @@ import "./ListingCard.css";
 
 export function ListingCard({ listing }) {
   return (
+
     <div className="listing-card">
       <img src={listing.img} alt={listing.company} />
       
@@ -19,5 +20,7 @@ export function ListingCard({ listing }) {
 
       <p className="description">{listing.description}</p>
     </div>
+
+    
   );
 }

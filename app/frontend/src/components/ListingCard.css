@@ -82,11 +82,3 @@
 .listing-card .description {
   display: none;
 }
-
-.listing-card::after {
-  content: "☆";
-  grid-area: extra;
-  font-size: 1.5rem;
-  color: #ccc;
-  padding-left: 20px;
-}
