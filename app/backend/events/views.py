@@ -1,3 +1,17 @@
-from django.shortcuts import render
+from rest_framework import generics
+from .models import Event, Ad
+from .serializers import EventSerializer, AdSerializer
 
-# Create your views here.
+# API/Controller-layer
+
+class EventList(generics.ListAPIView):
+    queryset = Event.objects.all()
+    serializer_class = EventSerializer
+
+
+class AdList(generics.ListAPIView):
+    queryset = Ad.objects.all()
+    serializer_class = AdSerializer
+
+
+
