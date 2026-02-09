@@ -1,10 +1,10 @@
 import './App.css';
-
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import { Layout } from "./components/Layout";
 import { Events } from './pages/Events';
 import { Listings } from './pages/Listings';
 import { LogIn } from './pages/LogIn';
+
 import { Home } from './pages/home';
 import { MyProfile } from './pages/MyProfile';
 import { AuthProvider } from './context/AuthContext';
@@ -33,7 +33,6 @@ function App() {
     </AuthProvider>
   )
 
-
 }
 
-export default App
+export default App;
