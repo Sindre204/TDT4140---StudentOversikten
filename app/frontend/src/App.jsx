@@ -4,23 +4,35 @@ import { Layout } from "./components/Layout";
 import { Events } from './pages/Events';
 import { Listings } from './pages/Listings';
 import { LogIn } from './pages/LogIn';
-import { Home } from './pages/Home';
-import { Norgesbank } from './pages/listingPages/Norgesbank';
+
+import { Home } from './pages/home';
+import { MyProfile } from './pages/MyProfile';
+import { AuthProvider } from './context/AuthContext';
 
 function App() {
+
   return (
-    <Router>
-      <Routes>
-        <Route element={<Layout />}>
-          <Route path='/' element={<Home />} />
-          <Route path='/Events' element={<Events />} />
-          <Route path='/Listings' element={<Listings />} />
-          <Route path='/Listings/Norgesbank' element={<Norgesbank />} />
-          <Route path='/LogIn' element={<LogIn />} />
-        </Route>
-      </Routes>
-    </Router>
+    <AuthProvider>
+      <Router>
+
+        <Routes>
+
+          <Route element={<Layout />}>
+
+            <Route path='/' element={<Home />} />
+            <Route path='/Events' element={<Events />} />
+            <Route path='/Listings' element={<Listings />} />
+            <Route path='/LogIn' element={<LogIn />} />
+            <Route path='/MyProfile' element={<MyProfile />} />
+
+          </Route>
+
+        </Routes>
+
+      </Router>
+    </AuthProvider>
   )
+
 }
 
 export default App;
