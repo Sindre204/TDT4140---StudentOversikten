@@ -1,11 +1,17 @@
 
-nav, .navbar-container {
+.navbar {
   display: flex;
-  gap: 10px;
+  justify-content: space-between;
+  align-items: center;
   padding: 20px;
   background-color: #f8f9fa;
   border-bottom: 1px solid #ddd;
   margin-bottom: 20px;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 10px;
 }
 
 

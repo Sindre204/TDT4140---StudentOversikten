@@ -1,37 +1,38 @@
 import './App.css';
 
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
-import {Layout} from "./components/Layout";
-import {Events} from './pages/Events';
-import {Listings} from './pages/Listings';
-import {LogIn} from './pages/LogIn';
+import { Layout } from "./components/Layout";
+import { Events } from './pages/Events';
+import { Listings } from './pages/Listings';
+import { LogIn } from './pages/LogIn';
 import { Home } from './pages/home';
+import { MyProfile } from './pages/MyProfile';
+import { AuthProvider } from './context/AuthContext';
 
 function App() {
 
-  return(
+  return (
+    <AuthProvider>
+      <Router>
 
-    <Router>
+        <Routes>
 
-      <Routes>
+          <Route element={<Layout />}>
 
-        <Route element = {<Layout/>}>
+            <Route path='/' element={<Home />} />
+            <Route path='/Events' element={<Events />} />
+            <Route path='/Listings' element={<Listings />} />
+            <Route path='/LogIn' element={<LogIn />} />
+            <Route path='/MyProfile' element={<MyProfile />} />
 
-          <Route path='/' element = {<Home/>}/>
-          <Route path='/Events' element = {<Events/>}/>
-          <Route path='/Listings' element = {<Listings/>}/>
-          <Route path='/LogIn' element = {<LogIn/>}/>
+          </Route>
 
-        </Route>
-    
-      </Routes>
+        </Routes>
 
-    </Router>
-
-
-
+      </Router>
+    </AuthProvider>
   )
-  
+
 
 }
 
