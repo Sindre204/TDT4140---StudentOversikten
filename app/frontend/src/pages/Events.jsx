@@ -20,9 +20,9 @@ export function Events() {
                         event={{
                             title: event.title,
                             date: event.date,
-                            places: event.place,
+                            places: event.places,
                             capacity: event.capacity,
-                            img: event.img
+                            image: event.image
                         }}
                     />
                 ))}
