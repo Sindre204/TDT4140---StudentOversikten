@@ -22,7 +22,7 @@ export function Events() {
                             date: event.date,
                             places: event.place,
                             capacity: event.capacity,
-                            img: null
+                            img: event.img
                         }}
                     />
                 ))}
