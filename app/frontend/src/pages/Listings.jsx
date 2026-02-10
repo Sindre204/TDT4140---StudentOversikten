@@ -50,7 +50,11 @@ export function Listings(){
     return (
         <>
 
-            <h1> Listings </h1>
+            <h1 className="Listings-header"> Jobbannonser </h1>
+
+            <p className="listings-subtitle">
+                Utforsk relevante jobbannonser
+            </p>
 
 
             <div className="listing-grid">

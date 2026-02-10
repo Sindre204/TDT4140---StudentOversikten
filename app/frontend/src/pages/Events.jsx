@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { EventCard } from "../components/EventCard";
 import { fetchEvents } from "../services/api";
 
+
 export function Events() {
     const [events, setEvents] = useState([]);
     
