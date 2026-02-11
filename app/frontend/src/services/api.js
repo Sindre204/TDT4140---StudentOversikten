@@ -6,6 +6,6 @@ export async function fetchEvents() {
 }
 
 export async function fetchAds() {
-  const response = await fetch(`${BASE_URL}/ads/`);
+  const response = await fetch(`${BASE_URL}/listing/`);
   return response.json();
 }

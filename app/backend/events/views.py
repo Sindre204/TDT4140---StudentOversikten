@@ -1,6 +1,6 @@
 from rest_framework import generics
-from .models import Event, Ad
-from .serializers import EventSerializer, AdSerializer
+from .models import Event, Listing
+from .serializers import EventSerializer, ListingSerializer
 
 # API/Controller-layer
 
@@ -9,9 +9,9 @@ class EventList(generics.ListAPIView):
     serializer_class = EventSerializer
 
 
-class AdList(generics.ListAPIView):
-    queryset = Ad.objects.all()
-    serializer_class = AdSerializer
+class ListingList(generics.ListAPIView):
+    queryset = Listing.objects.all()
+    serializer_class = ListingSerializer
 
 
 
