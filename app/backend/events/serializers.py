@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Event, Ad
+from .models import Event, Listing
 
 #Translates between DB-objekt and JSON
 
@@ -11,7 +11,9 @@ class EventSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class AdSerializer(serializers.ModelSerializer):
+class ListingSerializer(serializers.ModelSerializer):
+    image = serializers.ImageField(use_url=True)
+
     class Meta:
-        model = Ad
+        model = Listing
         fields = '__all__'
