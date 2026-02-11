@@ -6,6 +6,9 @@ export function EventCard({ event }) {
     <div className="event-card">
       <div className="event-content">
         <h2 className="event-title">{event.title}</h2>
+          <p className="event-organizer">
+            Arrangeres av {event.organizer}
+          </p>
         
         <div className="event-info">
           <span className="info-badge">{event.capacity}</span>

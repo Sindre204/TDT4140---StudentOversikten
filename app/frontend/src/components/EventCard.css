@@ -12,12 +12,13 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: white;
+    background: #e3d5ca;
     padding: 15px 20px;
-    border-radius: 4px;
-    border-left: 5px solid #f1c40f;
+    border-radius: 10px;
+    border-left: 5px solid #d6ccc2;
     box-shadow: 0 2px 5px rgba(0,0,0,0.05);
     transition: transform 0.2s;
+    margin-bottom: 20px;
 }
 
 .event-card:hover{
@@ -64,9 +65,30 @@
 
 .event-image {
     width: 160px;
-    height: 60px;
+    height: 80px;
     object-fit: cover;
     border-radius: 4px;
+}
+
+.events-header{
+    text-align: center;
+    font-size: 3rem;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.events-subtitle {
+    text-align: center;
+    font-size: 1.6rem;
+    margin-bottom: 40px;
+    color: #555;
+}
+
+.event-organizer {
+    font-size: 0.9rem;
+    color: #777;
+    margin: 0 0 8px 0;
 }
 
 /* .status-pill {
