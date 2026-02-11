@@ -4,7 +4,11 @@ import { Layout } from "./components/Layout";
 import { Events } from './pages/Events';
 import { Listings } from './pages/Listings';
 import { LogIn } from './pages/LogIn';
+
+import { CreateUser } from './pages/CreateUser';
+
 import { ListingDetail } from './components/ListingDetail';
+
 
 import { Home } from './pages/home';
 import { MyProfile } from './pages/MyProfile';
@@ -25,6 +29,7 @@ function App() {
             <Route path='/Listings' element={<Listings />} />
             <Route path='/listings/:id' element={<ListingDetail />} />
             <Route path='/LogIn' element={<LogIn />} />
+            <Route path='/CreateUser' element={<CreateUser />} />
             <Route path='/MyProfile' element={<MyProfile />} />
 
           </Route>

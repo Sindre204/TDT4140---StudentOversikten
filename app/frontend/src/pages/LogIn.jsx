@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import users from '../users.json';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import './LogIn.css';
 
@@ -8,14 +7,14 @@ export function LogIn() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const { login } = useAuth();
+    const { login, allUsers } = useAuth();
     const navigate = useNavigate();
 
     const handleLogin = (e) => {
         e.preventDefault();
         setError('');
 
-        const user = users.find(u => u.email === email && u.password === password);
+        const user = allUsers.find(u => u.email === email && u.password === password);
 
         if (user) {
             login(user);
@@ -51,6 +50,18 @@ export function LogIn() {
                 </div>
                 {error && <p className="error-message">{error}</p>}
                 <button type="submit">Log In</button>
+                <div className="create-user-link">
+                    <Link to="/CreateUser" style={{ color: 'blue', 
+                                                    textDecoration: 'none', 
+                                                    marginTop: '10px', 
+                                                    display: 'inline-block',
+                                                    borderRadius: '8px',
+                                                    border: '1px solid #ccc',
+                                                    padding: '8px 16px',}}
+                                                    >
+                        Create new user  
+                    </Link>
+                </div>
             </form>
         </div>
     )
