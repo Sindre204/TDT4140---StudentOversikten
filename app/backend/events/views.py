@@ -9,9 +9,17 @@ class EventList(generics.ListAPIView):
     serializer_class = EventSerializer
 
 
+class EventDetail(generics.RetrieveAPIView):
+    queryset = Event.objects.all()
+    serializer_class = EventSerializer
+
+
 class ListingList(generics.ListAPIView):
     queryset = Listing.objects.all()
     serializer_class = ListingSerializer
 
 
+class ListingDetail(generics.RetrieveAPIView):
+    queryset = Listing.objects.all()
+    serializer_class = ListingSerializer
 
