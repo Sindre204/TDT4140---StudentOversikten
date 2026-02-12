@@ -16,16 +16,7 @@ export function Events() {
 
             <div className="events-grid">
                 {events.map((event) => (
-                    <EventCard
-                        key={event.id}
-                        event={{
-                            title: event.title,
-                            date: event.date,
-                            places: event.places,
-                            capacity: event.capacity,
-                            image: event.image
-                        }}
-                    />
+                    <EventCard key={event.id} event={event} />
                 ))}
             </div>
         </>
