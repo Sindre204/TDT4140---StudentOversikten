@@ -19,6 +19,10 @@ export function Navbar() {
         ) : (
           <Link to='/LogIn'><button> Log in </button></Link>
         )}
+
+        <a href="http://127.0.0.1:8000/admin/">
+          <button id="admin"> Admin </button>
+        </a>
       </div>
     </nav>
   )

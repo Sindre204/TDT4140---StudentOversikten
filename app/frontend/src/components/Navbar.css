@@ -1,38 +1,57 @@
-
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
-  background-color: #f8f9fa;
-  border-bottom: 1px solid #ddd;
-  margin-bottom: 20px;
+  padding: 15px 40px;
+  /* Matcher den lyse bakgrunnen på siden din */
+  background-color: #f4f4f1; 
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  margin-bottom: 0; /* Siden siden din har egen padding */
 }
 
-.navbar-links {
+.navbar-links, .navbar-login {
   display: flex;
-  gap: 10px;
+  align-items: center;
+  gap: 20px;
 }
 
-
+/* Base-stil for alle knapper i navbaren */
 button {
-  padding: 10px 20px;
-  font-size: 16px;
+  padding: 10px 15px;
+  font-size: 15px;
+  font-weight: 500;
   cursor: pointer;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: white;
-  transition: all 0.2s ease;
+  border: none; /* Fjerner rammene for et renere uttrykk */
+  border-radius: 8px;
+  background-color: transparent;
+  color: #4a4a4a;
+  transition: all 0.3s ease;
 }
 
+/* Hover-effekt for vanlige lenker (Home, Events, Listings) */
+.navbar-links button:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+  color: #000;
+}
 
-button:hover {
-  background-color: #007bff;
+/* Primærknapper (Log in og Admin) */
+.navbar-login button, 
+#admin button {
+  background-color: #5d87ff; /* Den blåfargen du bruker i bildene */
   color: white;
-  border-color: #0056b3;
+  padding: 10px 22px;
+  box-shadow: 0 2px 6px rgba(93, 135, 255, 0.2);
 }
 
+.navbar-login button:hover, 
+#admin button:hover {
+  background-color: #4870e6;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(93, 135, 255, 0.3);
+}
 
-a {
-  text-decoration: none;
+/* Spesifikk justering for Admin-knappen hvis den skal skille seg litt ut */
+#admin button {
+  background-color: #5d87ff; 
+  margin-left: 5px;
 }
