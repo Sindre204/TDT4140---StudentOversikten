@@ -1,5 +1,5 @@
-import { createContext, useState, useContext, useEffect } from 'react';
-import staticUsers from '../users.json';
+import { createContext, useState, useContext } from 'react';
+import { loginUser, registerUser } from '../services/api';
 
 const AuthContext = createContext(null);
 
@@ -9,16 +9,11 @@ export const AuthProvider = ({ children }) => {
         return storedUser ? JSON.parse(storedUser) : null;
     });
 
-    const [allUsers, setAllUsers] = useState([]);
-
-    useEffect(() => {
-        const storedUsers = JSON.parse(localStorage.getItem('registered_users') || '[]');
-        setAllUsers([...staticUsers, ...storedUsers]);
-    }, []);
-
-    const login = (userData) => {
-        setUser(userData);
-        localStorage.setItem('user', JSON.stringify(userData));
+    const login = async ({ email, password }) => {
+        const loggedInUser = await loginUser({ email, password });
+        setUser(loggedInUser);
+        localStorage.setItem('user', JSON.stringify(loggedInUser));
+        return loggedInUser;
     };
 
     const logout = () => {
@@ -26,22 +21,12 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem('user');
     };
 
-    const register = (newUser) => {
-        const userWithRole = { ...newUser, role: 'student' };
-
-        // Update local storage for persistence
-        const storedUsers = JSON.parse(localStorage.getItem('registered_users') || '[]');
-        const updatedStoredUsers = [...storedUsers, userWithRole];
-        localStorage.setItem('registered_users', JSON.stringify(updatedStoredUsers));
-
-        // Update state
-        setAllUsers([...staticUsers, ...updatedStoredUsers]);
-
-        return true;
+    const register = async ({ email, fullName, password }) => {
+        return registerUser({ email, fullName, password });
     };
 
     return (
-        <AuthContext.Provider value={{ user, allUsers, login, logout, register }}>
+        <AuthContext.Provider value={{ user, login, logout, register }}>
             {children}
         </AuthContext.Provider>
     );

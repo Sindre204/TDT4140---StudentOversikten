@@ -12,7 +12,7 @@ export function CreateUser() {
     const { register } = useAuth();
     const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
 
@@ -26,11 +26,11 @@ export function CreateUser() {
             return;
         }
 
-        const success = register({ email, fullName, password });
-        if (success) {
+        try {
+            await register({ email, fullName, password });
             navigate('/LogIn');
-        } else {
-            setError('Failed to create user');
+        } catch (err) {
+            setError(err.message || 'Failed to create user');
         }
     };
 

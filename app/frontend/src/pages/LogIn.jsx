@@ -7,20 +7,18 @@ export function LogIn() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const { login, allUsers } = useAuth();
+    const { login } = useAuth();
     const navigate = useNavigate();
 
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
         setError('');
 
-        const user = allUsers.find(u => u.email === email && u.password === password);
-
-        if (user) {
-            login(user);
+        try {
+            await login({ email, password });
             navigate('/MyProfile');
-        } else {
-            setError('Invalid email or password');
+        } catch (err) {
+            setError(err.message || 'Invalid email or password');
         }
     };
 

@@ -76,17 +76,29 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
+#
+# Default to SQLite for local development so the project runs without
+# PostgreSQL drivers. Set USE_POSTGRES=true to use PostgreSQL instead.
+USE_POSTGRES = os.getenv('USE_POSTGRES', 'false').lower() in ('1', 'true', 'yes')
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'arrangement_db',
-        'USER': 'postgres',
-        'PASSWORD': '123',  
-        'HOST': 'localhost',
-        'PORT': '5432',
+if USE_POSTGRES:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv('POSTGRES_DB', 'arrangement_db'),
+            'USER': os.getenv('POSTGRES_USER', 'postgres'),
+            'PASSWORD': os.getenv('POSTGRES_PASSWORD', '123'),
+            'HOST': os.getenv('POSTGRES_HOST', 'localhost'),
+            'PORT': os.getenv('POSTGRES_PORT', '5432'),
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # Password validation
@@ -136,4 +148,3 @@ CORS_ALLOW_ALL_ORIGINS = True
 #picture events
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
-
