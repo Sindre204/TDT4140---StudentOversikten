@@ -41,17 +41,29 @@ export function EventDetail() {
       <button type="button" className="back-button" onClick={() => navigate(-1)}>
         Back
       </button>
-      {imageUrl ? <img className="detail-image" src={imageUrl} alt={event.title} /> : null}
+
+      {imageUrl ? (
+        <img className="detail-image" src={imageUrl} alt={event.title} />
+      ) : null}
+
       <h1>{event.title}</h1>
+
+      <p>
+        <strong>Category:</strong> {event.category}
+      </p>
+
       <p>
         <strong>Date:</strong> {event.date}
       </p>
+
       <p>
         <strong>Location:</strong> {event.places}
       </p>
+
       <p>
         <strong>Capacity:</strong> {event.capacity}
       </p>
+
       <p className="detail-description">{event.description}</p>
     </section>
   );

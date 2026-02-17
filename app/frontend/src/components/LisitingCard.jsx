@@ -8,7 +8,6 @@ export function ListingCard({ listing }) {
   const imageUrl = getListingImageUrl(listing.image);
 
   const handleClick = () => {
-    // change to detail page here for later
     navigate(`/listings/${listing.id}`);
   };
 
@@ -30,7 +29,9 @@ export function ListingCard({ listing }) {
 
         <div className="details-row">
           <span className="employment">{employment}</span>
-          <span className="location">{listing.location || "Ukjent sted"}</span>
+          <span className="location">
+            {listing.city || "Ukjent sted"}
+          </span>
         </div>
 
         <p className="description">{listing.description}</p>

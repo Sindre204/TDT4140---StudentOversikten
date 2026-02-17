@@ -12,6 +12,11 @@ export function Events() {
         fetchEvents().then(data => setEvents(data));
     }, []);
 
+    const categories = [
+        "All",
+        ...new Set(events.map(event => event.category))
+    ];
+
     const filteredEvents = events
         .filter(event => {
             const matchesCategory =
@@ -49,10 +54,11 @@ export function Events() {
                     value={filter}
                     onChange={(e) => setFilter(e.target.value)}
                 >
-                    <option value="All">Alle kategorier</option>
-                    <option value="Sosialt">Sosialt</option>
-                    <option value="Sports">Sport</option>
-                    <option value="Kurs">Kurs</option>
+                    {categories.map(category => (
+                        <option key={category} value={category}>
+                            {category === "All" ? "Alle kategorier" : category}
+                        </option>
+                    ))}
                 </select>
 
                 <select

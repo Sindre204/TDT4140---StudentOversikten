@@ -48,7 +48,8 @@ export function ListingDetail() {
         <strong>Employment:</strong> {listing.employment_type}
       </p>
       <p>
-        <strong>Location:</strong> {listing.location}
+        <strong>Location:</strong>{" "}
+        {listing.city || "Ukjent sted"}
       </p>
       <p className="detail-description">{listing.description}</p>
     </section>
