@@ -1,0 +1,92 @@
+from rest_framework.test import APITestCase
+from django.contrib.auth.models import User
+from events.serializers import (
+    UserPublicSerializer,
+    RegisterSerializer,
+    LoginSerializer
+)
+
+
+class TestSerializers(APITestCase):
+
+    def test_user_public_serializer_fullname_and_role_student(self):
+        user = User.objects.create_user(username="testuser", 
+                                        email="test@example.com", 
+                                        first_name="Test", 
+                                        last_name="User", 
+                                        password="testpass")
+        
+
+        serializer = UserPublicSerializer(user)
+        data = serializer.data
+
+        self.assertEqual(data["fullName"], "Test User")
+        self.assertEqual(data["role"], "student")
+        self.assertIn("email", data)
+
+
+    def test_user_public_serializer_fullname_and_role_admin(self):
+        user = User.objects.create_superuser(username="adminuser", 
+                                            email="admin@example.com",
+                                            password="adminpass")
+        
+        serializer = UserPublicSerializer(user)
+        data = serializer.data
+
+        self.assertEqual(data["role"], "admin")
+
+
+    def test_register_serializer_rejects_duplicate_email(self):
+        User.objects.create_user(
+            username="duplicate@test.com",
+            email="duplicate@test.com",
+            password="password123"
+        )
+
+        data = {
+            "email": "duplicate@test.com",
+            "fullName": "Another User",
+            "password": "password123"
+        }
+
+        serializer = RegisterSerializer(data=data)
+
+        self.assertFalse(serializer.is_valid())
+        self.assertIn("email", serializer.errors)
+   
+
+    def test_login_serializer_success(self):
+
+        user = User.objects.create_user(
+            username="loginuser",
+            email="loginuser@example.com",
+            password="loginpass"
+        )
+
+        data = {
+            "email": "loginuser@example.com",
+            "password": "loginpass"
+        }
+
+        serializer = LoginSerializer(data=data)
+
+        self.assertTrue(serializer.is_valid())
+        self.assertEqual(serializer.validated_data["user"], user)
+
+
+    def test_login_serializer_invalid_password(self):
+        User.objects.create_user(
+            username="wrongloginuser2",
+            email="wrongloginuser2@example.com",
+            password="correctpassword"
+        )
+
+        data = {
+            "email": "wrongloginuser2@example.com",
+            "password": "incorrectpassword"
+        }
+
+        serializer = LoginSerializer(data=data)
+
+        self.assertFalse(serializer.is_valid())
+        
