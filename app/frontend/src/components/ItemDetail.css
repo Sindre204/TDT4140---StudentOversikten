@@ -39,3 +39,41 @@
   text-align: center;
   margin-top: 2rem;
 }
+
+.register-button {
+  margin-top: 20px;
+  padding: 12px 28px;
+
+  font-size: 16px;
+  font-weight: 600;
+
+  background-color: #2563eb;
+  color: white;
+
+  border: none;
+  border-radius: 8px;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.register-button:hover {
+  background-color: #1d4ed8;
+}
+
+.register-button.leave {
+  background-color: #dc2626;
+}
+
+.register-button.leave:hover {
+  background-color: #b91c1c;
+}
+
+.register-message {
+  margin-top: 12px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #16a34a;
+}
+
