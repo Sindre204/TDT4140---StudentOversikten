@@ -36,7 +36,7 @@ export function Events() {
 
     return (
         <>
-            <h1 className="events-header">Events</h1>
+            <h1 className="events-header">Arrangementer</h1>
 
             <p className="events-subtitle">
                 Utforsk kommende arrangementer
