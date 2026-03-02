@@ -24,12 +24,12 @@ export function LogIn() {
 
     return (
         <div className="login-container">
-            <h1>Log In</h1>
+            <h1>Logg Inn</h1>
             <form onSubmit={handleLogin} className="login-form">
                 <div className="form-group">
                     <label htmlFor="email">Email</label>
                     <input
-                        type="text"
+                        type="email" /* Endret fra text til email for bedre mobil-tastatur */
                         id="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
@@ -37,7 +37,7 @@ export function LogIn() {
                     />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="password">Password</label>
+                    <label htmlFor="password">Passord</label>
                     <input
                         type="password"
                         id="password"
@@ -46,18 +46,14 @@ export function LogIn() {
                         required
                     />
                 </div>
+                
                 {error && <p className="error-message">{error}</p>}
-                <button type="submit">Log In</button>
+                
+                <button type="submit">Logg Inn</button>
+
                 <div className="create-user-link">
-                    <Link to="/CreateUser" style={{ color: 'blue', 
-                                                    textDecoration: 'none', 
-                                                    marginTop: '10px', 
-                                                    display: 'inline-block',
-                                                    borderRadius: '8px',
-                                                    border: '1px solid #ccc',
-                                                    padding: '8px 16px',}}
-                                                    >
-                        Create new user  
+                    <Link to="/CreateUser">
+                        Har du ikke konto? Lag ny bruker
                     </Link>
                 </div>
             </form>

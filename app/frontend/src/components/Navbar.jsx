@@ -9,15 +9,15 @@ export function Navbar() {
   return (
     <nav className="navbar">
       <div className="navbar-links">
-        <Link to='/'><button> Home </button></Link>
-        <Link to='/Events'><button> Events </button></Link>
-        <Link to='/Listings'><button> Listings </button></Link>
+        <Link to='/'><button> Hjem </button></Link>
+        <Link to='/Events'><button> Arrangementer </button></Link>
+        <Link to='/Listings'><button> Jobbannonser </button></Link>
       </div>
       <div className="navbar-login">
         {user ? (
-          <Link to='/MyProfile'><button> My profile </button></Link>
+          <Link to='/MyProfile'><button> Min profil </button></Link>
         ) : (
-          <Link to='/LogIn'><button> Log in </button></Link>
+          <Link to='/LogIn'><button> Logg inn </button></Link>
         )}
 
         <a href="http://127.0.0.1:8000/admin/">

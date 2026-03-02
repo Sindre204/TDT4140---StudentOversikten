@@ -36,10 +36,10 @@ export function CreateUser() {
 
     return (
         <div className="create-user-container">
-            <h1>Create New User</h1>
+            <h1>Lag ny bruker</h1>
             <form onSubmit={handleSubmit} className="create-user-form">
                 <div className="form-group">
-                    <label htmlFor="fullName">Full Name</label>
+                    <label htmlFor="fullName">Fult navn</label>
                     <input
                         type="text"
                         id="fullName"
@@ -59,7 +59,7 @@ export function CreateUser() {
                     />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="password">Password</label>
+                    <label htmlFor="password">Passord</label>
                     <input
                         type="password"
                         id="password"
@@ -69,7 +69,7 @@ export function CreateUser() {
                     />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="confirmPassword">Confirm Password</label>
+                    <label htmlFor="confirmPassword">Bekreft Passord</label>
                     <input
                         type="password"
                         id="confirmPassword"
@@ -79,7 +79,7 @@ export function CreateUser() {
                     />
                 </div>
                 {error && <p className="error-message">{error}</p>}
-                <button type="submit">Create New User</button>
+                <button type="submit">Lag Ny Bruker</button>
             </form>
         </div>
     );

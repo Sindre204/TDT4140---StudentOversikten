@@ -39,3 +39,37 @@
     font-size: 0.9em;
     margin: 0;
 }
+
+
+.login-form button[type="submit"] {
+    background-color: #5d87ff; 
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-top: 10px;
+}
+
+.login-form button[type="submit"]:hover {
+    background-color: #4573f1;
+}
+
+.create-user-link {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.create-user-link a {
+    color: #5d87ff;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.create-user-link a:hover {
+    text-decoration: underline;
+}
