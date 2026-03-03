@@ -74,3 +74,11 @@ class Listing(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Registration(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ("user", "event")
