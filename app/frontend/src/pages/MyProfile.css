@@ -9,6 +9,28 @@
     text-align: left;
 }
 
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.profile-header h1 {
+    margin: 0;
+}
+
+.profile-role-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #0f766e 0%, #0ea5e9 100%);
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+}
+
 .profile-info {
     margin-bottom: 20px;
 }

@@ -1,6 +1,9 @@
 from rest_framework import serializers
-from django.contrib.auth.models import User
+from django.contrib.auth.models import Group, User
 from .models import Event, Listing
+
+
+COMPANY_GROUP_NAME = 'company'
 
 #Translates between DB-objekt and JSON
 
@@ -40,6 +43,8 @@ class UserPublicSerializer(serializers.ModelSerializer):
     def get_role(self, obj):
         if obj.is_staff or obj.is_superuser:
             return 'admin'
+        if obj.groups.filter(name=COMPANY_GROUP_NAME).exists():
+            return 'company'
         return 'student'
 
 
@@ -47,6 +52,7 @@ class RegisterSerializer(serializers.Serializer):
     email = serializers.EmailField()
     fullName = serializers.CharField(max_length=150)
     password = serializers.CharField(min_length=6, write_only=True)
+    role = serializers.ChoiceField(choices=['student', 'company'], default='student')
 
     def validate_email(self, value):
         email = value.strip().lower()
@@ -57,12 +63,19 @@ class RegisterSerializer(serializers.Serializer):
         return email
 
     def create(self, validated_data):
-        return User.objects.create_user(
+        role = validated_data.get('role', 'student')
+        user = User.objects.create_user(
             username=validated_data['email'],
             email=validated_data['email'],
             first_name=validated_data['fullName'].strip(),
             password=validated_data['password'],
         )
+
+        if role == 'company':
+            company_group, _ = Group.objects.get_or_create(name=COMPANY_GROUP_NAME)
+            user.groups.add(company_group)
+
+        return user
 
 
 class LoginSerializer(serializers.Serializer):

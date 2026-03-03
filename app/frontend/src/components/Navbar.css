@@ -16,6 +16,18 @@
   gap: 20px;
 }
 
+.role-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #0f766e 0%, #0ea5e9 100%);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
 /* Base-stil for alle knapper i navbaren */
 button {
   padding: 10px 15px;

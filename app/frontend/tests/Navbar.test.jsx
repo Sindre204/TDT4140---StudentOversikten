@@ -14,7 +14,7 @@ describe("Navbar Component", () => {
         vi.clearAllMocks();
     });
 
-    test("viser standardlenker (Home, Events, Listings)", () => {
+    test("viser standardlenker (Hjem, Arrangementer, Jobbannonser)", () => {
 
         vi.mocked(useAuth).mockReturnValue({ user: null });
 
@@ -24,12 +24,12 @@ describe("Navbar Component", () => {
             </MemoryRouter>
         );
 
-        expect(screen.getByRole("button", { name: /Home/i })).toBeInTheDocument();
-        expect(screen.getByRole("button", { name: /Events/i })).toBeInTheDocument();
-        expect(screen.getByRole("button", { name: /Listings/i })).toBeInTheDocument();
+        expect(screen.getByRole("button", { name: /Hjem/i })).toBeInTheDocument();
+        expect(screen.getByRole("button", { name: /Arrangementer/i })).toBeInTheDocument();
+        expect(screen.getByRole("button", { name: /Jobbannonser/i })).toBeInTheDocument();
     });
 
-    test("viser 'Log in' når brukeren ikke er logget inn", () => {
+    test("viser 'Logg inn' når brukeren ikke er logget inn", () => {
         vi.mocked(useAuth).mockReturnValue({ user: null });
 
         render(
@@ -38,11 +38,12 @@ describe("Navbar Component", () => {
             </MemoryRouter>
         );
 
-        expect(screen.getByRole("button", { name: /Log in/i })).toBeInTheDocument();
-        expect(screen.queryByRole("button", { name: /My profile/i })).not.toBeInTheDocument();
+        expect(screen.getByRole("button", { name: /Logg inn/i })).toBeInTheDocument();
+        expect(screen.queryByRole("button", { name: /Min profil/i })).not.toBeInTheDocument();
+        expect(screen.queryByRole("button", { name: /Administrasjon/i })).not.toBeInTheDocument();
     });
 
-    test("viser 'My profile' når brukeren er logget inn", () => {
+    test("viser 'Min profil' når brukeren er logget inn", () => {
         vi.mocked(useAuth).mockReturnValue({ user: { name: "Test User" } });
 
         render(
@@ -51,12 +52,12 @@ describe("Navbar Component", () => {
             </MemoryRouter>
         );
 
-        expect(screen.getByRole("button", { name: /My profile/i })).toBeInTheDocument();
-        expect(screen.queryByRole("button", { name: /Log in/i })).not.toBeInTheDocument();
+        expect(screen.getByRole("button", { name: /Min profil/i })).toBeInTheDocument();
+        expect(screen.queryByRole("button", { name: /Logg inn/i })).not.toBeInTheDocument();
     });
 
-    test("viser Admin-knappen med riktig lenke", () => {
-        vi.mocked(useAuth).mockReturnValue({ user: null });
+    test("viser administrasjonsknappen med riktig lenke for bedrift", () => {
+        vi.mocked(useAuth).mockReturnValue({ user: { role: "company" } });
 
         render(
             <MemoryRouter>
@@ -64,9 +65,25 @@ describe("Navbar Component", () => {
             </MemoryRouter>
         );
 
-        const adminBtn = screen.getByRole("button", { name: /Admin/i });
+        const adminBtn = screen.getByRole("button", { name: /Administrasjon/i });
         const adminLink = adminBtn.closest("a");
         
-        expect(adminLink).toHaveAttribute("href", "http://127.0.0.1:8000/admin/");
+        expect(adminLink).toHaveAttribute("href", "/administration");
     });
-});
+
+    test("viser django-admin-knappen med riktig lenke for admin", () => {
+        vi.mocked(useAuth).mockReturnValue({ user: { role: "admin" } });
+
+        render(
+            <MemoryRouter>
+                <Navbar />
+            </MemoryRouter>
+        );
+
+        const adminBtn = screen.getByRole("button", { name: /^Admin$/i });
+        const adminLink = adminBtn.closest("a");
+
+        expect(adminLink).toHaveAttribute("href", "http://127.0.0.1:8000/admin/");
+        expect(screen.queryByRole("button", { name: /Administrasjon/i })).not.toBeInTheDocument();
+    });
+}); 

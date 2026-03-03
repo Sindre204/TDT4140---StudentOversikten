@@ -18,9 +18,18 @@ export function Navbar() {
 
       <div className="navbar-login">
         {user ? (
-          <Link to='/MyProfile'><button> Min profil </button></Link>
+          <>
+            {user.role === 'company' && <span className="role-badge">Bedrift</span>}
+            <Link to='/MyProfile'><button> Min profil </button></Link>
+          </>
         ) : (
           <Link to='/LogIn'><button> Logg inn </button></Link>
+        )}
+
+        {user && user.role === 'company' && (
+          <Link to='/administration'>
+            <button id="admin"> Administrasjon </button>
+          </Link>
         )}
 
         {user && user.role === 'admin' && (

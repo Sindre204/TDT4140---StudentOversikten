@@ -21,8 +21,8 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem('user');
     };
 
-    const register = async ({ email, fullName, password }) => {
-        return registerUser({ email, fullName, password });
+    const register = async ({ email, fullName, password, role }) => {
+        return registerUser({ email, fullName, password, role });
     };
 
     return (

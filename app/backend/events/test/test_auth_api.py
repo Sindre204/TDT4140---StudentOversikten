@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import Group, User
 from rest_framework import status
 from rest_framework.test import APITestCase
 
@@ -25,6 +25,22 @@ class AuthApiTests(APITestCase):
         created_user = User.objects.get(email=payload["email"])
         self.assertEqual(created_user.username, payload["email"])
         self.assertTrue(created_user.check_password(payload["password"]))
+
+    def test_register_creates_company_user_and_returns_company_role(self):
+        payload = {
+            "email": "company@example.com",
+            "fullName": "Company User",
+            "password": "Password123",
+            "role": "company",
+        }
+
+        response = self.client.post(self.register_url, payload, format="json")
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.data["role"], "company")
+
+        created_user = User.objects.get(email=payload["email"])
+        self.assertTrue(created_user.groups.filter(name="company").exists())
 
     def test_register_rejects_duplicate_email(self):
         User.objects.create_user(
@@ -115,3 +131,22 @@ class AuthApiTests(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["role"], "admin")
+
+    def test_login_returns_company_role_for_company_group(self):
+        user = User.objects.create_user(
+            username="company@example.com",
+            email="company@example.com",
+            first_name="Company User",
+            password="Password123",
+        )
+        company_group, _ = Group.objects.get_or_create(name="company")
+        user.groups.add(company_group)
+
+        response = self.client.post(
+            self.login_url,
+            {"email": "company@example.com", "password": "Password123"},
+            format="json",
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["role"], "company")

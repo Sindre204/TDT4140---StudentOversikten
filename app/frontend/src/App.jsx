@@ -9,6 +9,9 @@ import { CreateUser } from './pages/CreateUser';
 
 import { ListingDetail } from './components/ListingDetail';
 import { EventDetail } from './components/EventDetail';
+import { Administration } from './pages/Administration';
+import { CreateEventAdmin } from './pages/CreateEventAdmin';
+import { CreateListingAdmin } from './pages/CreateListingAdmin';
 
 
 import { Home } from './pages/home';
@@ -33,6 +36,11 @@ function App() {
             <Route path='/LogIn' element={<LogIn />} />
             <Route path='/CreateUser' element={<CreateUser />} />
             <Route path='/MyProfile' element={<MyProfile />} />
+            <Route path='/administration' element={<Administration />} />
+            <Route path='/administration/events/new' element={<CreateEventAdmin />} />
+            <Route path='/administration/events/:id/edit' element={<CreateEventAdmin />} />
+            <Route path='/administration/ads/new' element={<CreateListingAdmin />} />
+            <Route path='/administration/ads/:id/edit' element={<CreateListingAdmin />} />
 
           </Route>
 
