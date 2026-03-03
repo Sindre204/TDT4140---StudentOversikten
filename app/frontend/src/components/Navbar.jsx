@@ -12,6 +12,7 @@ export function Navbar() {
         <Link to='/'><button> Hjem </button></Link>
         <Link to='/Events'><button> Arrangementer </button></Link>
         <Link to='/Listings'><button> Jobbannonser </button></Link>
+        <Link to='/Companies'><button> Firmaer </button></Link>
       </div>
 
 

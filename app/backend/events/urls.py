@@ -4,6 +4,8 @@ from .views import (
     EventDetail,
     ListingList,
     ListingDetail,
+    CompanyList,
+    CompanyDetail,
     RegisterView,
     LoginView,
 )
@@ -15,6 +17,8 @@ urlpatterns = [
     path('ads/<int:pk>/', ListingDetail.as_view()),
     path('listing/', ListingList.as_view()),
     path('listing/<int:pk>/', ListingDetail.as_view()),
+    path('companies/', CompanyList.as_view()),
+    path('companies/<int:pk>/', CompanyDetail.as_view()),
     path('auth/register/', RegisterView.as_view()),
     path('auth/login/', LoginView.as_view()),
 ]

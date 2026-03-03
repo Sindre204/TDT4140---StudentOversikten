@@ -1,6 +1,8 @@
 from rest_framework import serializers
+
 from django.contrib.auth.models import Group, User
-from .models import Event, Listing
+from .models import Event, Listing, Company
+
 
 
 COMPANY_GROUP_NAME = 'company'
@@ -20,6 +22,14 @@ class ListingSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Listing
+        fields = '__all__'
+
+
+class CompanySerializer(serializers.ModelSerializer):
+    image = serializers.ImageField(use_url=True)
+
+    class Meta:
+        model = Company
         fields = '__all__'
 
 

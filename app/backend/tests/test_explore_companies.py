@@ -1,0 +1,45 @@
+from rest_framework.test import APITestCase
+from django.contrib.auth.models import User
+from events.models import Company
+
+
+class ExploreCompaniesTest(APITestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser", password="testpass")
+
+        self.company1 = Company.objects.create(
+            name="BDO",
+            industry="Revisjon",
+            description="Vi leverer rådgivning.",
+            created_by=self.user,
+        )
+
+        self.company2 = Company.objects.create(
+            name="Abra",
+            industry="Teknologi",
+            description="Magiske løsninger.",
+            created_by=self.user,
+        )
+
+    def test_explore_companies_returns_companies(self):
+        response = self.client.get("/api/companies/", format="json")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.data), 2)
+
+        names = [company["name"] for company in response.data]
+        self.assertIn(self.company1.name, names)
+        self.assertIn(self.company2.name, names)
+
+    def test_company_detail_returns_correct_company(self):
+        response = self.client.get(f"/api/companies/{self.company1.id}/", format="json")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data["name"], self.company1.name)
+        self.assertEqual(response.data["industry"], self.company1.industry)
+        self.assertEqual(response.data["description"], self.company1.description)
+        self.assertIn("image", response.data)
+
+    def test_company_detail_returns_404_for_nonexistent_company(self):
+        response = self.client.get("/api/companies/999/", format="json")
+        self.assertEqual(response.status_code, 404)

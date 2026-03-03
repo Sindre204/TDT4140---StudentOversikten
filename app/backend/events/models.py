@@ -76,6 +76,17 @@ class Listing(models.Model):
         return self.title
 
 
+class Company(models.Model):
+    name = models.CharField(max_length=200)
+    industry = models.CharField(max_length=100)
+    description = models.TextField()
+    image = models.ImageField(upload_to='companies/', blank=True, null=True)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+
 class Registration(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
