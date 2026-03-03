@@ -1,0 +1,31 @@
+
+from django.test import TestCase
+from django.urls import reverse
+from django.conf import settings
+
+
+
+class languageSwitch(TestCase):
+    def test_default_language_is_norwegian(self):
+        response = self.client.get("/")
+        self.assertEqual(
+            response.wsgi_request.LANGUAGE_CODE,
+            settings.LANGUAGE_CODE
+    )
+
+    def test_switch_to_portuguese(self):
+        response = self.client.get(reverse("set_language"), {"language": "pt"}, follow=True)
+        self.assertEqual(response.wsgi_request.LANGUAGE_CODE, "pt")
+
+    def test_language_cookie_is_set(self):
+        self.client.get(reverse("set_language"), {"language": "pt"})
+        self.assertEqual(
+            self.client.cookies.get(settings.LANGUAGE_COOKIE_NAME).value,
+            "pt"
+        )
+
+    def test_language_persists_after_switch(self):
+        self.client.get(reverse("set_language"), {"language": "pt"})
+        response = self.client.get("/")
+        self.assertEqual(response.wsgi_request.LANGUAGE_CODE, "pt")
+ 
