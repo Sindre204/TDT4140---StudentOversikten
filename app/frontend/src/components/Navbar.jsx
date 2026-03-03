@@ -13,6 +13,9 @@ export function Navbar() {
         <Link to='/Events'><button> Arrangementer </button></Link>
         <Link to='/Listings'><button> Jobbannonser </button></Link>
       </div>
+
+
+
       <div className="navbar-login">
         {user ? (
           <Link to='/MyProfile'><button> Min profil </button></Link>
@@ -20,11 +23,13 @@ export function Navbar() {
           <Link to='/LogIn'><button> Logg inn </button></Link>
         )}
 
-        <a href="http://127.0.0.1:8000/admin/">
-          <button id="admin"> Admin </button>
-        </a>
+        {user && user.role === 'admin' && (
+          <a href="http://127.0.0.1:8000/admin/">
+            <button id="admin"> Admin </button>
+          </a>
+        )}
       </div>
     </nav>
   )
 
-}
+} 
