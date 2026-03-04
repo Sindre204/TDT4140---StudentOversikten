@@ -42,6 +42,11 @@ async function requestJsonWithBody(path, body) {
   return parseResponse(response);
 }
 
+async function requestJsonWithMethod(path, method) {
+  const response = await fetch(`${BASE_URL}${path}`, { method });
+  return parseResponse(response);
+}
+
 async function requestMultipart(path, formData, method = "POST") {
   const response = await fetch(`${BASE_URL}${path}`, {
     method,
@@ -124,5 +129,23 @@ export async function createListing(listingData) {
 
 export async function updateListing(id, listingData) {
   return requestMultipart(`/ads/${id}/`, toFormData(listingData), "PATCH");
+}
+
+export async function fetchEventRegistrationStatus(eventId, userId) {
+  return requestJson(`/events/${eventId}/register/?user_id=${userId}`);
+}
+
+export async function registerForEvent(eventId, userId) {
+  return requestJsonWithBody(`/events/${eventId}/register/`, { user_id: userId });
+}
+
+export async function unregisterFromEvent(eventId, userId) {
+  const query = `/events/${eventId}/register/?user_id=${userId}`;
+  return requestJsonWithMethod(query, "DELETE");
+}
+
+export async function fetchEventRegistrationsForCompany(eventId, companyUserId) {
+  const query = `/events/${eventId}/registrations/?company_user_id=${companyUserId}`;
+  return requestJson(query);
 }
 // End

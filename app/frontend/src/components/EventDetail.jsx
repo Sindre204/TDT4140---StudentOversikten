@@ -1,16 +1,23 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { fetchEventById } from "../services/api";
+import {
+  fetchEventById,
+  fetchEventRegistrationStatus,
+  registerForEvent,
+  unregisterFromEvent,
+} from "../services/api";
+import { useAuth } from "../context/AuthContext";
 import "./ItemDetail.css";
 
 export function EventDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const canRegister = user?.role !== "company";
 
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-
   const [isRegistered, setIsRegistered] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -18,8 +25,18 @@ export function EventDetail() {
     async function loadEvent() {
       try {
         setLoading(true);
+        setError("");
+        setMessage("");
+
         const data = await fetchEventById(id);
         setEvent(data);
+
+        if (user?.id && canRegister) {
+          const registration = await fetchEventRegistrationStatus(id, user.id);
+          setIsRegistered(Boolean(registration.is_registered));
+        } else {
+          setIsRegistered(false);
+        }
       } catch (_err) {
         setError("Something went wrong while fetching the event.");
       } finally {
@@ -28,15 +45,28 @@ export function EventDetail() {
     }
 
     loadEvent();
-  }, [id]);
+  }, [id, user?.id, canRegister]);
 
-  function handleRegister() {
-    if (isRegistered) {
-      setIsRegistered(false);
-      setMessage("Du har forlatt arrangementet");
-    } else {
-      setIsRegistered(true);
-      setMessage("Du er nå påmeldt");
+  async function handleRegister() {
+    setMessage("");
+
+    if (!user?.id) {
+      setMessage("Du ma vare logget inn for a melde deg pa.");
+      return;
+    }
+
+    try {
+      if (isRegistered) {
+        await unregisterFromEvent(id, user.id);
+        setIsRegistered(false);
+        setMessage("Du har forlatt arrangementet.");
+      } else {
+        await registerForEvent(id, user.id);
+        setIsRegistered(true);
+        setMessage("Du er nå påmeldt.");
+      }
+    } catch (_err) {
+      setMessage("Kunne ikke oppdatere påmelding akkurat na.");
     }
   }
 
@@ -52,22 +82,11 @@ export function EventDetail() {
 
   return (
     <section className="detail-page">
-
-      <button
-        type="button"
-        className="back-button"
-        onClick={() => navigate(-1)}
-      >
+      <button type="button" className="back-button" onClick={() => navigate(-1)}>
         Back
       </button>
 
-      {imageUrl && (
-        <img
-          className="detail-image"
-          src={imageUrl}
-          alt={event.title}
-        />
-      )}
+      {imageUrl && <img className="detail-image" src={imageUrl} alt={event.title} />}
 
       <h1>{event.title}</h1>
 
@@ -87,23 +106,15 @@ export function EventDetail() {
         <strong>Capacity:</strong> {event.capacity}
       </p>
 
-      <p className="detail-description">
-        {event.description}
-      </p>
+      <p className="detail-description">{event.description}</p>
 
-      <button
-        className={`register-button ${isRegistered ? "leave" : ""}`}
-        onClick={handleRegister}
-      >
-        {isRegistered ? "Forlat" : "Meld på"}
-      </button>
+      {canRegister ? (
+        <button className={`register-button ${isRegistered ? "leave" : ""}`} onClick={handleRegister}>
+          {isRegistered ? "Forlat" : "Meld på"}
+        </button>
+      ) : null}
 
-      {message && (
-        <p className="register-message">
-          {message}
-        </p>
-      )}
-
+      {message && <p className="register-message">{message}</p>}
     </section>
   );
 }
@@ -111,16 +122,11 @@ export function EventDetail() {
 function getImageUrl(imagePath) {
   if (!imagePath) return null;
 
-  if (
-    imagePath.startsWith("http://") ||
-    imagePath.startsWith("https://")
-  ) {
+  if (imagePath.startsWith("http://") || imagePath.startsWith("https://")) {
     return imagePath;
   }
 
   const baseUrl = "http://127.0.0.1:8000";
 
-  return imagePath.startsWith("/")
-    ? `${baseUrl}${imagePath}`
-    : `${baseUrl}/${imagePath}`;
+  return imagePath.startsWith("/") ? `${baseUrl}${imagePath}` : `${baseUrl}/${imagePath}`;
 }

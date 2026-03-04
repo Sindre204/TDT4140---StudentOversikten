@@ -6,6 +6,8 @@ from .views import (
     ListingDetail,
     CompanyList,
     CompanyDetail,
+    EventRegistrationView,
+    EventRegistrationsForCompanyView,
     RegisterView,
     LoginView,
 )
@@ -13,6 +15,8 @@ from .views import (
 urlpatterns = [
     path('events/', EventList.as_view()),
     path('events/<int:pk>/', EventDetail.as_view()),
+    path('events/<int:pk>/register/', EventRegistrationView.as_view()),
+    path('events/<int:pk>/registrations/', EventRegistrationsForCompanyView.as_view()),
     path('ads/', ListingList.as_view()),
     path('ads/<int:pk>/', ListingDetail.as_view()),
     path('listing/', ListingList.as_view()),

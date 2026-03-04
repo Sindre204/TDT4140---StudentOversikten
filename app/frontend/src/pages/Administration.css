@@ -81,14 +81,31 @@
 }
 
 .administration-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
+  display: grid;
+  gap: 0.85rem;
   padding: 1rem 1.25rem;
   border: 1px solid rgba(15, 118, 110, 0.14);
   border-radius: 1rem;
   background: #ffffff;
+}
+
+.administration-item-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.administration-item-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.administration-item-actions {
+  display: inline-flex;
+  align-items: flex-end;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
 .administration-item h3,
@@ -99,6 +116,19 @@
 .administration-item p {
   margin-top: 0.3rem;
   color: rgba(22, 50, 79, 0.72);
+}
+
+.administration-registrations {
+  border-top: 1px solid rgba(15, 118, 110, 0.14);
+  padding-top: 0.8rem;
+}
+
+.administration-link-button {
+  margin-top: 0;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
 }
 
 .administration-form {
@@ -159,8 +189,15 @@
   }
 
   .administration-section-header,
-  .administration-item {
+  .administration-item-top {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .administration-item-actions {
+    width: 100%;
+    align-items: flex-start;
+    flex-direction: row;
+    gap: 1rem;
   }
 }
