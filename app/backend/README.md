@@ -88,3 +88,28 @@ Add `/admin/` to the end of the URL, or open:
 - http://127.0.0.1:8000/admin/
 
 You can now log in with your superuser and edit content in the admin panel.
+
+
+## 10. Seed the database with test data (optional)
+
+If you want pre-generated content in the database, you can use the built-in seed script.
+
+### Install Faker
+
+```bash
+pip install faker
+```
+
+### Run the seed command
+
+```bash
+python manage.py seed_db
+```
+
+This will generate:
+
+- 6 companies
+- 25 events
+- 20 job listings
+
+All data is owned by the first superuser in the system, so **the superuser must be created before this step**.
