@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState} from "react";
+import { useTranslation } from "react-i18next";
 import { ListingCard } from "../components/LisitingCard";
 import { fetchAds } from "../services/api";
 
 export function Listings() {
+  const {t} = useTranslation();
   const [listings, setListings] = useState([]);
   const [selectedCity, setSelectedCity] = useState("All");
   const [sortOrder, setSortOrder] = useState("newest");
@@ -35,16 +37,16 @@ export function Listings() {
 
   return (
     <>
-      <h1 className="Listings-header"> Jobbannonser </h1>
+      <h1 className="Listings-header"> {t("jobListings")} </h1>
 
       <p className="listings-subtitle">
-        Utforsk relevante jobbannonser
+        {t("exploreListings")}
       </p>
 
       <div className="listings-controls">
         <input
           type="text"
-          placeholder="Søk etter jobbannonser"
+          placeholder = {t("searchListings")}
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
@@ -55,14 +57,14 @@ export function Listings() {
         >
           {cities.map(city => (
             <option key={city} value={city}>
-              {city === "All" ? "Alle byer" : city}
+              {city === "All" ? t("allCities") : city}
             </option>
           ))}
         </select>
 
         <select value={sortOrder} onChange={(e) => setSortOrder(e.target.value)}>
-          <option value="newest">Nyeste først</option>
-          <option value="oldest">Eldste først</option>
+          <option value="newest">{t("newestFirst")}</option>
+          <option value="oldest">{t("oldestFirst")}</option>
         </select>
       </div>
 

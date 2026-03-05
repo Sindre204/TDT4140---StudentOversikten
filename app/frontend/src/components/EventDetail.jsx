@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   fetchEventById,
   fetchEventRegistrationStatus,
@@ -12,6 +13,8 @@ import "./ItemDetail.css";
 export function EventDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { t } = useTranslation();
+
   const { user } = useAuth();
   const canRegister = user?.role !== "company";
 
@@ -71,19 +74,24 @@ export function EventDetail() {
   }
 
   if (loading) {
-    return <p className="detail-status">Loading event...</p>;
+    return <p className="detail-status">{t("loading")}</p>;
   }
 
   if (error || !event) {
-    return <p className="detail-status">{error || "Event not found."}</p>;
+    return <p className="detail-status">{error || t("eventNotFound")}</p>;
   }
 
   const imageUrl = getImageUrl(event.image);
 
   return (
     <section className="detail-page">
-      <button type="button" className="back-button" onClick={() => navigate(-1)}>
-        Back
+
+      <button
+        type="button"
+        className="back-button"
+        onClick={() => navigate(-1)}
+      >
+        {t("back")}
       </button>
 
       {imageUrl && <img className="detail-image" src={imageUrl} alt={event.title} />}
@@ -91,26 +99,26 @@ export function EventDetail() {
       <h1>{event.title}</h1>
 
       <p>
-        <strong>Category:</strong> {event.category}
+        <strong>{t("category")}</strong> {event.category}
       </p>
 
       <p>
-        <strong>Date:</strong> {event.date}
+        <strong>{t("date")}</strong> {event.date}
       </p>
 
       <p>
-        <strong>Location:</strong> {event.places}
+        <strong>{t("location")}</strong> {event.places}
       </p>
 
       <p>
-        <strong>Capacity:</strong> {event.capacity}
+        <strong>{t("capacity")}</strong> {event.capacity}
       </p>
 
       <p className="detail-description">{event.description}</p>
 
       {canRegister ? (
         <button className={`register-button ${isRegistered ? "leave" : ""}`} onClick={handleRegister}>
-          {isRegistered ? "Forlat" : "Meld på"}
+          {isRegistered ? t("leaveEvent") : t("register")}
         </button>
       ) : null}
 

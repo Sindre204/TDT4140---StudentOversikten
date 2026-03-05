@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useTranslation } from 'react-i18next';
 import './CreateUser.css';
 
 export function CreateUser() {
@@ -12,18 +13,20 @@ export function CreateUser() {
     const [error, setError] = useState('');
     const { register } = useAuth();
     const navigate = useNavigate();
+    const { t } = useTranslation();
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
 
         if (password !== confirmPassword) {
-            setError('Passwords do not match');
+            setError(t("passwordsNoMatch"));
             return;
         }
 
         if (password.length < 6) {
-            setError('Password must be at least 6 characters long');
+            setError(t("passwordTooShort"));
             return;
         }
 
@@ -31,16 +34,16 @@ export function CreateUser() {
             await register({ email, fullName, password, role });
             navigate('/LogIn');
         } catch (err) {
-            setError(err.message || 'Failed to create user');
+            setError(err.message || t("failedToCreate"));
         }
     };
 
     return (
         <div className="create-user-container">
-            <h1>Lag ny bruker</h1>
+            <h1>{t("createUser")}</h1>
             <form onSubmit={handleSubmit} className="create-user-form">
                 <div className="form-group">
-                    <label htmlFor="fullName">Fult navn</label>
+                    <label htmlFor="fullName">{t("fullName")}</label>
                     <input
                         type="text"
                         id="fullName"
@@ -50,7 +53,7 @@ export function CreateUser() {
                     />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="email">Email</label>
+                    <label htmlFor="email">{t("email")}</label>
                     <input
                         type="email"
                         id="email"
@@ -71,7 +74,7 @@ export function CreateUser() {
                     </select>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="password">Passord</label>
+                    <label htmlFor="password">{t("password")}</label>
                     <input
                         type="password"
                         id="password"
@@ -81,7 +84,7 @@ export function CreateUser() {
                     />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="confirmPassword">Bekreft Passord</label>
+                    <label htmlFor="confirmPassword">{t("confirmPassword")}</label>
                     <input
                         type="password"
                         id="confirmPassword"
@@ -91,7 +94,7 @@ export function CreateUser() {
                     />
                 </div>
                 {error && <p className="error-message">{error}</p>}
-                <button type="submit">Lag Ny Bruker</button>
+                <button type="submit">{t("createUser")}</button>
             </form>
         </div>
     );

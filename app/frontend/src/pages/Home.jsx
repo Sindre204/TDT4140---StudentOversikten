@@ -1,21 +1,23 @@
 import "./Home.css";
+import {useTranslation} from "react-i18next";
+
 export function Home() {
+  const {t} = useTranslation();
+
   return (
     <div className="home">
-      <h1>Velkommen til StudentOversikten</h1>
+      <h1>{t("homeTitle")}</h1>
 
       <p className="intro">
-        Alt du trenger som student – samlet på ett sted.
+        {t("homeIntro")}
       </p>
 
       <div className="info-box">
         <p>
-          Her finner du en oversikt over arrangementer og jobbannonser
-          som er relevante for deg som student.
+          {t("homeInfo1")}
         </p>
         <p>
-          Bruk menyen øverst for å utforske hva som skjer,
-          eller finn din neste deltidsjobb.
+          {t("homeInfo2")}
         </p>
       </div>
 

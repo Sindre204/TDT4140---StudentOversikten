@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { EventCard } from "../components/EventCard";
 import { fetchEvents } from "../services/api";
 
 export function Events() {
+    const { t } = useTranslation();
     const [events, setEvents] = useState([]);
     const [filter, setFilter] = useState("All");
     const [sortOrder, setSortOrder] = useState("newest");
@@ -36,16 +38,16 @@ export function Events() {
 
     return (
         <>
-            <h1 className="events-header">Arrangementer</h1>
+            <h1 className="events-header">{t("eventsTitle")}</h1>
 
             <p className="events-subtitle">
-                Utforsk kommende arrangementer
+                {t("eventsSubtitle")}
             </p>
 
             <div className="events-controls">
                 <input
                     type="text"
-                    placeholder="Søk etter arrangementer"
+                    placeholder={t("searchEvents")}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
@@ -56,7 +58,7 @@ export function Events() {
                 >
                     {categories.map(category => (
                         <option key={category} value={category}>
-                            {category === "All" ? "Alle kategorier" : category}
+                            {category === "All" ? t("allCategories") : category}
                         </option>
                     ))}
                 </select>
@@ -65,8 +67,8 @@ export function Events() {
                     value={sortOrder}
                     onChange={(e) => setSortOrder(e.target.value)}
                 >
-                    <option value="newest">Nyeste først</option>
-                    <option value="oldest">Eldste først</option>
+                    <option value="newest">{t("newestFirst")}</option>
+                    <option value="oldest">{t("oldestFirst")}</option>
                 </select>
             </div>
 

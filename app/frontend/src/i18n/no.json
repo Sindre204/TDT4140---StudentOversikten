@@ -1,0 +1,64 @@
+{
+  "home": "Hjem",
+  "events": "Arrangementer",
+  "listings": "Jobbannonser",
+  "myProfile": "Min profil",
+  "logIn": "Logg inn",
+
+  "jobListings": "Jobbannonser",
+  "exploreListings": "Utforsk relevante jobbannonser",
+  "searchListings": "Søk etter jobbannonser",
+  "allCities": "Alle byer",
+  "newestFirst": "Nyeste først",
+  "oldestFirst": "Eldste først",
+  "eventsTitle": "Arrangementer",
+  "eventsSubtitle": "Utforsk kommende arrangementer",
+  "searchEvents": "Søk etter arrangementer",
+  "allCategories": "Alle kategorier",
+
+
+  "homeTitle": "Velkommen til StudentOversikten",
+  "homeIntro": "Alt du trenger som student – samlet på ett sted.",
+  "homeInfo1": "Her finner du en oversikt over arrangementer og jobbannonser som er relevante for deg som student.",
+  "homeInfo2": "Bruk menyen øverst for å utforske hva som skjer, eller finn din neste deltidsjobb.",  
+
+  "pleaseLogIn": "Vennligst logg inn for å se profilen din.",
+  "myProfileTitle": "Min profil",
+  "fullName": "Fullt navn",
+  "email": "E-post",
+  "role": "Rolle",
+  "logOut": "Logg ut",
+
+  "createUser": "Lag ny bruker",
+  "password": "Passord",
+  "confirmPassword": "Bekreft passord",
+  "passwordsNoMatch": "Passordene stemmer ikke overens",
+  "passwordTooShort": "Passordet må være minst 6 tegn langt",
+  "failedToCreate": "Kunne ikke opprette bruker",
+
+  "invalidLogin": "Ugyldig e-post eller passord",
+  "noAccount": "Har du ikke konto? Lag ny bruker",
+
+  "fetchError": "Noe gikk galt ved henting av arrangementet.",
+  "loading": "Laster...",
+  "eventNotFound": "Arrangement ikke funnet.",
+  "back": "Tilbake",
+  "category": "Kategori",
+  "date": "Dato",
+  "location": "Sted",
+  "capacity": "Kapasitet",
+  "leftEvent": "Du har forlatt arrangementet",
+  "registeredEvent": "Du er nå påmeldt",
+  "leaveEvent": "Forlat",
+  "register": "Meld på",
+
+  "fetchListingError": "Noe gikk galt ved henting av jobbannonsen.",
+  "listingNotFound": "Jobbannonse ikke funnet.",
+  "employment": "Ansettelsestype",
+  "unknownLocation": "Ukjent sted",
+
+  "noImage": "Ingen bilde",
+  "unknownCompany": "Ukjent selskap",
+  "noTitle": "Ingen tittel",
+  "company": "Selskap"
+}

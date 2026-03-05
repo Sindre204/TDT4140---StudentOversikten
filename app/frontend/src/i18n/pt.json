@@ -1,0 +1,64 @@
+{
+  "home": "Início",
+  "events": "Eventos",
+  "listings": "Ofertas de emprego",
+  "myProfile": "Meu perfil",
+  "logIn": "Entrar",
+  "jobListings": "Ofertas de emprego",
+  "exploreListings": "Explore ofertas de emprego relevantes",
+  "searchListings": "Pesquisar ofertas de emprego",
+  "allCities": "Todas as cidades",
+  "newestFirst": "Mais recentes primeiro",
+  "oldestFirst": "Mais antigos primeiro",
+  "eventsTitle": "Eventos",
+  "eventsSubtitle": "Explore eventos futuros",
+  "searchEvents": "Pesquisar eventos",
+  "allCategories": "Todas as categorias",
+
+
+  "homeTitle": "Bem-vindo ao StudentOversikten",
+  "homeIntro": "Tudo o que você precisa como estudante – reunido em um só lugar.",
+  "homeInfo1": "Aqui você encontra uma visão geral de eventos e ofertas de emprego relevantes para você como estudante.",
+  "homeInfo2": "Use o menu acima para explorar o que está acontecendo, ou encontre seu próximo emprego de meio período.",
+
+  "pleaseLogIn": "Por favor, faça login para ver seu perfil.",
+  "myProfileTitle": "Meu perfil",
+  "fullName": "Nome completo",
+  "email": "E-mail",
+  "role": "Função",
+  "logOut": "Sair",
+
+  "createUser": "Criar novo utilizador",
+  "password": "Senha",
+  "confirmPassword": "Confirmar senha",
+  "passwordsNoMatch": "As senhas não coincidem",
+  "passwordTooShort": "A senha deve ter pelo menos 6 caracteres",
+  "failedToCreate": "Falha ao criar utilizador",
+
+  "invalidLogin": "E-mail ou senha inválidos",
+  "noAccount": "Não tem conta? Criar novo utilizador",
+
+
+  "fetchError": "Algo correu mal ao carregar o evento.",
+  "loading": "A carregar...",
+  "eventNotFound": "Evento não encontrado.",
+  "back": "Voltar",
+  "category": "Categoria",
+  "date": "Data",
+  "location": "Local",
+  "capacity": "Capacidade",
+  "leftEvent": "Você saiu do evento",
+  "registeredEvent": "Você está inscrito",
+  "leaveEvent": "Sair",
+  "register": "Inscrever-se",
+
+  "fetchListingError": "Algo correu mal ao carregar a oferta.",
+  "listingNotFound": "Oferta não encontrada.",
+  "employment": "Tipo de emprego",
+  "unknownLocation": "Local desconhecido",
+
+  "noImage": "Sem imagem",
+  "unknownCompany": "Empresa desconhecida",
+  "noTitle": "Sem título",
+  "company": "Empresa"
+}

@@ -1,10 +1,13 @@
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import "./ListingCard.css";
 
 export function ListingCard({ listing }) {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+
   const employment =
-    listing.employment_type || listing.employment || listing.emplyment || "Ukjent";
+    listing.employment_type || listing.employment || listing.emplyment || t("unknownLocation");
   const imageUrl = getListingImageUrl(listing.image);
 
   const handleClick = () => {
@@ -20,17 +23,17 @@ export function ListingCard({ listing }) {
       {imageUrl ? (
         <img src={imageUrl} alt={`${listing.company || "Company"} logo`} />
       ) : (
-        <div className="listing-image-fallback">Ingen bilde</div>
+        <div className="listing-image-fallback">{t("noImage")}</div>
       )}
 
       <div className="content">
-        <h3>{listing.company || "Ukjent selskap"}</h3>
-        <h2>{listing.title || "Ingen tittel"}</h2>
+        <h3>{listing.company || t("unknownCompany")}</h3>
+        <h2>{listing.title || t("noTitle")}</h2>
 
         <div className="details-row">
           <span className="employment">{employment}</span>
           <span className="location">
-            {listing.city || "Ukjent sted"}
+            {listing.city || t("unknownLocation")}
           </span>
         </div>
 
