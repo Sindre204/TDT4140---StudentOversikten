@@ -1,6 +1,7 @@
 import random
 from django.core.management.base import BaseCommand
-from django.contrib.auth.models import User
+from django.contrib.auth.models import Group, User
+from django.utils.text import slugify
 from faker import Faker
 from events.models import Event, Listing, Company
 
@@ -13,6 +14,11 @@ fake = Faker(['no_NO'])
 class Command(BaseCommand):
     help = 'Fyller databasen med DETERMINISTISKE testdata (likt hver gang)'
 
+    @staticmethod
+    def _company_token(company_name):
+        token = slugify(company_name).replace('-', '')
+        return token or 'company'
+
     def handle(self, *args, **kwargs):
         # --- SEEDING ---
         # Ved å sette dette tallet, vil random.choice og fake.name() 
@@ -21,12 +27,6 @@ class Command(BaseCommand):
         random.seed(SEED)
         Faker.seed(SEED)
         
-        # 1. Hent en bruker til å eie dataene
-        user = User.objects.first()
-        if not user:
-            self.stdout.write("Ingen bruker funnet. Oppretter admin...")
-            user = User.objects.create_superuser('admin', 'admin@example.com', 'pass123')
-
         self.stdout.write("Sletter gammel data...")
         Event.objects.all().delete()
         Listing.objects.all().delete()
@@ -37,21 +37,57 @@ class Command(BaseCommand):
         cities = ['Trondheim', 'Oslo', 'Bergen', 'Stavanger', 'Tromsø' ]
         job_types = ['Fulltid', 'Deltid', 'Internship', 'Sommerjobb']
         company_names = ['BDO', 'Equinor', 'Itera', 'Sopra Steria', 'Netlight', 'Kongsberg']
+        company_group, _ = Group.objects.get_or_create(name='company')
 
         # 2. Generer firmaer
         self.stdout.write("Genererer firmaer...")
-        companies = []
+        companies_with_users = []
         for name in company_names:
+            token = self._company_token(name)
+            username = token
+            email = f'{token}@{token}.com'
+            password = f'test{token}123'
+
+            company_user, created = User.objects.get_or_create(
+                username=username,
+                defaults={
+                    'email': email,
+                    'first_name': name,
+                    'is_active': True,
+                },
+            )
+            if created:
+                company_user.set_password(password)
+                company_user.save(update_fields=['password'])
+            else:
+                updates = []
+                if company_user.email != email:
+                    company_user.email = email
+                    updates.append('email')
+                if company_user.first_name != name:
+                    company_user.first_name = name
+                    updates.append('first_name')
+                if not company_user.is_active:
+                    company_user.is_active = True
+                    updates.append('is_active')
+                company_user.set_password(password)
+                updates.append('password')
+                company_user.save(update_fields=updates)
+
+            company_user.groups.add(company_group)
+
             company = Company.objects.create(
                 name=name,
+                industry=fake.bs(),
                 description=fake.paragraph(nb_sentences=3),
-                created_by=user
+                created_by=company_user
             )
-            companies.append(company)
+            companies_with_users.append((company, company_user))
 
         # 3. Generer arrangementer
         self.stdout.write("Genererer 25 arrangementer...")
         for _ in range(25):
+            company, company_user = random.choice(companies_with_users)
             Event.objects.create(
                 title=fake.catch_phrase(),
                 category=random.choice(categories),
@@ -60,19 +96,20 @@ class Command(BaseCommand):
                 description=fake.paragraph(nb_sentences=5),
                 places=random.choice(['Ballsalen', 'Edgar', 'Klubben', 'Strossa']),
                 capacity=random.randint(20, 500),
-                created_by=user
+                created_by=company_user
             )
 
         # 4. Generer jobbannonser
         self.stdout.write("Genererer 20 jobbannonser...")
         for _ in range(20):
+            company, company_user = random.choice(companies_with_users)
             Listing.objects.create(
                 title=fake.job(),
-                company=random.choice(companies),
+                company=company.name,
                 description=fake.text(max_nb_chars=1000),
                 employment_type=random.choice(job_types),
                 city=random.choice(cities),
-                created_by=user
+                created_by=company_user
             )
 
         self.stdout.write(self.style.SUCCESS(
