@@ -1,75 +1,93 @@
 .login-container {
-    max-width: 400px;
-    margin: 40px auto;
-    padding: 30px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    background-color: white;
+    max-width: 450px; /* Gjort litt bredere for bedre balanse */
+    margin: 80px auto; /* Mer luft i toppen slik som på bildet */
+    padding: 40px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius); /* Bruker 20px fra App.css */
+    box-shadow: var(--card-shadow);
+    background-color: var(--bg-card); /* Skifter farge i Dark Mode */
+    transition: all 0.3s ease;
+}
+
+.login-title {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--text-main);
+    margin-bottom: 30px;
+    letter-spacing: -0.04em;
 }
 
 .login-form {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 20px;
 }
 
 .form-group {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 8px;
     text-align: left;
 }
 
 .form-group label {
-    font-weight: bold;
-    font-size: 0.9em;
-    color: #333;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text-muted); /* Mykere farge for labels */
 }
 
 .form-group input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
+    padding: 14px;
+    background-color: var(--input-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px; /* Matche stilen på søkefeltene */
+    font-size: 1rem;
+    color: var(--text-main);
+    transition: border-color 0.2s;
 }
 
-.error-message {
-    color: #dc3545;
-    font-size: 0.9em;
-    margin: 0;
+.form-group input:focus {
+    outline: none;
+    border-color: var(--accent);
 }
-
 
 .login-form button[type="submit"] {
-    background-color: #5d87ff; 
+    background-color: var(--accent);
     color: white;
-    padding: 12px;
+    padding: 14px;
     border: none;
-    border-radius: 6px;
-    font-size: 16px;
-    font-weight: 600;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 700;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    transition: all 0.2s ease;
     margin-top: 10px;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
 }
 
 .login-form button[type="submit"]:hover {
-    background-color: #4573f1;
+    transform: translateY(-2px);
+    filter: brightness(1.1);
 }
 
 .create-user-link {
     text-align: center;
-    margin-top: 15px;
+    margin-top: 25px;
 }
 
 .create-user-link a {
-    color: #5d87ff;
+    color: var(--accent);
     text-decoration: none;
-    font-size: 14px;
-    font-weight: 500;
+    font-size: 0.95rem;
+    font-weight: 600;
 }
 
 .create-user-link a:hover {
     text-decoration: underline;
 }
+
+[data-theme='dark'] .form-group label {
+    color: var(--text-main);
+}   
+
