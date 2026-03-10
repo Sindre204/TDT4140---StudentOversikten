@@ -1,3 +1,21 @@
+:root {
+    --card-bg: #ffffff;
+    --card-border: #e2e8f0;
+    --text-title: #1e293b;
+    --text-body: #475569;
+    --text-muted: #94a3b8;
+    --accent-blue: #3b82f6;
+}
+
+[data-theme='dark'] {
+    --card-bg: #1e293b;
+    --card-border: #334155;
+    --text-title: #f8fafc;
+    --text-body: #cbd5e1;
+    --text-muted: #94a3b8;
+    --accent-blue: #60a5fa;
+}
+
 .auth-page-wrapper {
     display: flex;
     align-items: center;

@@ -51,17 +51,17 @@
   align-items: center;
   gap: 24px;
   background: var(--card-bg);
-  padding: 20px 30px;
-  border-radius: 16px;
+  padding: 22px 24px;
+  border-radius: 18px;
   border: 1px solid var(--card-border);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+  box-shadow: 0 6px 18px -12px rgba(15, 23, 42, 0.12);
   transition: all 0.2s ease;
   cursor: pointer;
 }
 
 .listing-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 15px rgba(0,0,0,0.05);
+  transform: translateY(-3px);
+  box-shadow: 0 14px 28px -18px rgba(15, 23, 42, 0.18);
   border-color: var(--accent-blue);
 }
 
@@ -71,6 +71,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .listing-logo {
@@ -94,24 +95,32 @@
 
 .listing-content {
   flex: 1;
+  min-width: 0;
 }
 
 .listing-company {
   font-size: 0.9rem;
-  color: var(--text-muted);
-  font-weight: 600;
+  color: var(--accent-blue);
+  font-weight: 700;
   text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .listing-title {
   margin: 4px 0 10px;
   font-size: 1.4rem;
   color: var(--text-title);
+  line-height: 1.3;
 }
 
 .listing-tags {
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
+}
+
+.listing-tags .info-badge {
+  border-radius: 999px;
 }
 
 .listing-action {
@@ -125,4 +134,16 @@
 
 .listing-action .arrow {
   font-size: 1.2rem;
+}
+
+@media (max-width: 640px) {
+  .listing-card {
+    padding: 18px;
+    align-items: flex-start;
+  }
+
+  .listing-logo-container {
+    width: 68px;
+    height: 68px;
+  }
 }

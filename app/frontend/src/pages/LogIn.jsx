@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTranslation } from 'react-i18next';
+import './CreateUser.css';
 import './LogIn.css';
 
 export function LogIn() {
@@ -11,6 +12,8 @@ export function LogIn() {
     const { login } = useAuth();
     const navigate = useNavigate();
     const { t } = useTranslation();
+    const loginLabel = t("logIn");
+    const submitLabel = loginLabel === "logIn" ? "Log In" : loginLabel;
 
 
     const handleLogin = async (e) => {
@@ -26,40 +29,49 @@ export function LogIn() {
     };
 
     return (
-        <div className="login-container">
-            <h1>{t("logIn")}</h1>
-            <form onSubmit={handleLogin} className="login-form">
-                <div className="form-group">
-                    <label htmlFor="email">{t("email")}</label>
-                    <input
-                        type="email" /* Endret fra text til email for bedre mobil-tastatur */
-                        id="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="password">{t("password")}</label>
-                    <input
-                        type="password"
-                        id="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                </div>
-                
-                {error && <p className="error-message">{error}</p>}
-                
-                <button type="submit">{t("logIn")}</button>
+        <div className="auth-page-wrapper login-page-wrapper">
+            <div className="auth-container login-container">
+                <h1 className="auth-title">{submitLabel}</h1>
+                <p className="auth-subtitle">Logg inn for å fortsette i portalen</p>
 
-                <div className="create-user-link">
-                    <Link to="/CreateUser">
-                        {t("noAccount")}
-                    </Link>
-                </div>
-            </form>
+                <form onSubmit={handleLogin} className="auth-form login-form">
+                    <div className="form-group">
+                        <label htmlFor="email">{t("email")}</label>
+                        <input
+                            type="email"
+                            id="email"
+                            placeholder="navn@eksempel.no"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="password">{t("password")}</label>
+                        <input
+                            type="password"
+                            id="password"
+                            placeholder="Skriv inn passordet ditt"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                        />
+                    </div>
+
+                    {error && <p className="error-bubble error-message">{error}</p>}
+
+                    <button type="submit" className="auth-submit-btn" aria-label={submitLabel}>
+                        {submitLabel}
+                    </button>
+
+                    <div className="create-user-link">
+                        <span>Ny her?</span>
+                        <Link to="/CreateUser">
+                            {t("noAccount")}
+                        </Link>
+                    </div>
+                </form>
+            </div>
         </div>
     )
 

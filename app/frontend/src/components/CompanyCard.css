@@ -29,22 +29,24 @@
   justify-content: space-between;
   align-items: center;
   background: var(--card-bg);
-  padding: 20px 24px;
-  border-radius: 16px;
+  padding: 22px 24px;
+  border-radius: 18px;
   border: 1px solid var(--card-border);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 6px 18px -12px rgba(15, 23, 42, 0.12);
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
+  gap: 20px;
 }
 
 .company-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 14px 28px -18px rgba(15, 23, 42, 0.18);
   border-color: var(--accent-blue);
 }
 
 .company-content {
   flex: 1;
+  min-width: 0;
 }
 
 .company-name {
@@ -53,12 +55,13 @@
   font-weight: 700;
   color: var(--text-main);
   letter-spacing: -0.02em;
+  line-height: 1.3;
 }
 
 .company-badge {
   background: var(--badge-bg);
   padding: 6px 14px;
-  border-radius: 10px;
+  border-radius: 999px;
   font-size: 0.8rem;
   font-weight: 600;
   color: var(--accent-blue);
@@ -67,10 +70,11 @@
 .company-image, .company-image-fallback {
   width: 120px;
   height: 70px;
-  border-radius: 12px;
+  border-radius: 14px;
   object-fit: contain; /* Endret til contain for logoer */
   background: var(--badge-bg);
   padding: 8px; /* Gir logoer litt pusterom */
+  flex-shrink: 0;
 }
 
 .company-image-fallback {
@@ -87,6 +91,7 @@
 @media (max-width: 500px) {
   .company-card {
     padding: 16px;
+    gap: 14px;
   }
   .company-image, .company-image-fallback {
     width: 80px;

@@ -44,13 +44,21 @@ export function CompanyDetail() {
 
       {imageUrl ? <img className="detail-image" src={imageUrl} alt={company.name} /> : null}
 
-      <h1>{company.name}</h1>
-      <p>
-        <strong>Bransje:</strong> {company.industry || "Ukjent"}
-      </p>
-      <p className="detail-description">
-        {company.description || "Ingen beskrivelse tilgjengelig."}
-      </p>
+      <div className="detail-hero">
+        <h1>{company.name}</h1>
+      </div>
+      <section className="detail-meta" aria-label="Company information">
+        <article className="detail-meta-card">
+          <p className="detail-meta-label">Bransje</p>
+          <p className="detail-meta-value">{company.industry || "Ukjent"}</p>
+        </article>
+      </section>
+      <section className="detail-content-section" aria-labelledby="company-description-heading">
+        <h2 id="company-description-heading" className="detail-section-title">Beskrivelse</h2>
+        <p className="detail-description">
+          {company.description || "Ingen beskrivelse tilgjengelig."}
+        </p>
+      </section>
     </section>
   );
 }

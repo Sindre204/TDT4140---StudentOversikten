@@ -120,30 +120,40 @@ export function EventDetail() {
 
       {imageUrl && <img className="detail-image" src={imageUrl} alt={event.title} />}
 
-      <h1>{event.title}</h1>
+      <div className="detail-hero">
+        <h1>{event.title}</h1>
+      </div>
 
-      <p>
-        <strong>{t("category")}</strong> {event.category}
-      </p>
+      <section className="detail-meta" aria-label="Event information">
+        <article className="detail-meta-card">
+          <p className="detail-meta-label">{t("category")}</p>
+          <p className="detail-meta-value">{event.category || "-"}</p>
+        </article>
+        <article className="detail-meta-card">
+          <p className="detail-meta-label">{t("date")}</p>
+          <p className="detail-meta-value">{event.date || "-"}</p>
+        </article>
+        <article className="detail-meta-card">
+          <p className="detail-meta-label">{t("location")}</p>
+          <p className="detail-meta-value">{event.places || "-"}</p>
+        </article>
+        <article className="detail-meta-card">
+          <p className="detail-meta-label">{t("capacity")}</p>
+          <p className="detail-meta-value">{event.capacity || "-"}</p>
+        </article>
+      </section>
 
-      <p>
-        <strong>{t("date")}</strong> {event.date}
-      </p>
-
-      <p>
-        <strong>{t("location")}</strong> {event.places}
-      </p>
-
-      <p>
-        <strong>{t("capacity")}</strong> {event.capacity}
-      </p>
-
-      <p className="detail-description">{event.description}</p>
+      <section className="detail-content-section" aria-labelledby="description-heading">
+        <h2 id="description-heading" className="detail-section-title">Beskrivelse</h2>
+        <p className="detail-description">{event.description || "Ingen beskrivelse tilgjengelig."}</p>
+      </section>
 
       {canRegister ? (
-        <button className={`register-button ${isRegistered ? "leave" : ""}`} onClick={handleRegister}>
-          {isRegistered ? t("leaveEvent") : t("register")}
-        </button>
+        <div className="detail-actions">
+          <button className={`register-button ${isRegistered ? "leave" : ""}`} onClick={handleRegister}>
+            {isRegistered ? t("leaveEvent") : t("register")}
+          </button>
+        </div>
       ) : null}
 
       {message && <p className="register-message">{message}</p>}

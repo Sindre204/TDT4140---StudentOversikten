@@ -1,11 +1,15 @@
+.login-page-wrapper {
+    padding: 48px 24px;
+}
+
 .login-container {
-    max-width: 450px; /* Gjort litt bredere for bedre balanse */
-    margin: 80px auto; /* Mer luft i toppen slik som på bildet */
+    max-width: 480px;
+    margin: 80px auto;
     padding: 40px;
     border: 1px solid var(--border-color);
-    border-radius: var(--radius); /* Bruker 20px fra App.css */
+    border-radius: var(--radius);
     box-shadow: var(--card-shadow);
-    background-color: var(--bg-card); /* Skifter farge i Dark Mode */
+    background-color: var(--bg-card);
     transition: all 0.3s ease;
 }
 
@@ -21,7 +25,11 @@
 .login-form {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 1.25rem;
+}
+
+.login-form input::placeholder {
+    color: var(--text-muted);
 }
 
 .form-group {
@@ -34,14 +42,14 @@
 .form-group label {
     font-weight: 600;
     font-size: 0.95rem;
-    color: var(--text-muted); /* Mykere farge for labels */
+    color: var(--text-muted);
 }
 
 .form-group input {
     padding: 14px;
     background-color: var(--input-bg);
     border: 1px solid var(--border-color);
-    border-radius: 12px; /* Matche stilen på søkefeltene */
+    border-radius: 12px;
     font-size: 1rem;
     color: var(--text-main);
     transition: border-color 0.2s;
@@ -71,16 +79,24 @@
     filter: brightness(1.1);
 }
 
+.error-message {
+    margin: 0;
+}
+
 .create-user-link {
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.35rem;
     margin-top: 25px;
+    color: var(--text-body);
+    font-size: 0.95rem;
 }
 
 .create-user-link a {
     color: var(--accent);
     text-decoration: none;
-    font-size: 0.95rem;
-    font-weight: 600;
+    font-weight: 700;
 }
 
 .create-user-link a:hover {
@@ -89,5 +105,17 @@
 
 [data-theme='dark'] .form-group label {
     color: var(--text-main);
-}   
+}
 
+@media (max-width: 640px) {
+    .login-page-wrapper {
+        min-height: calc(100vh - 72px);
+        padding: 32px 16px;
+        align-items: flex-start;
+    }
+
+    .login-container {
+        padding: 2rem 1.25rem;
+        border-radius: 20px;
+    }
+}

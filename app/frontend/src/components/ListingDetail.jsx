@@ -45,16 +45,24 @@ export function ListingDetail() {
         {t("back")}
       </button>
       {imageUrl ? <img className="detail-image" src={imageUrl} alt={listing.title} /> : null}
-      <h1>{listing.title}</h1>
-      <h2>{listing.company}</h2>
-      <p>
-        <strong>{t("employment")}</strong> {listing.employment_type}
-      </p>
-      <p>
-        <strong>{t("location")}</strong>{" "}
-        {listing.city || t("unknownLocation")}
-      </p>
-      <p className="detail-description">{listing.description}</p>
+      <div className="detail-hero">
+        <h1>{listing.title}</h1>
+        <h2>{listing.company}</h2>
+      </div>
+      <section className="detail-meta" aria-label="Listing information">
+        <article className="detail-meta-card">
+          <p className="detail-meta-label">{t("employment")}</p>
+          <p className="detail-meta-value">{listing.employment_type || "-"}</p>
+        </article>
+        <article className="detail-meta-card">
+          <p className="detail-meta-label">{t("location")}</p>
+          <p className="detail-meta-value">{listing.city || t("unknownLocation")}</p>
+        </article>
+      </section>
+      <section className="detail-content-section" aria-labelledby="listing-description-heading">
+        <h2 id="listing-description-heading" className="detail-section-title">Beskrivelse</h2>
+        <p className="detail-description">{listing.description || "Ingen beskrivelse tilgjengelig."}</p>
+      </section>
     </section>
   );
 }

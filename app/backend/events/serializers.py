@@ -11,10 +11,28 @@ COMPANY_GROUP_NAME = 'company'
 
 class EventSerializer(serializers.ModelSerializer):
     image = serializers.ImageField(use_url=True, required=False, allow_null=True)
+    host_company = serializers.SerializerMethodField()
 
     class Meta:
         model = Event
         fields = '__all__'
+
+    def get_host_company(self, obj):
+        creator = getattr(obj, "created_by", None)
+        if creator is None:
+            return ""
+
+        full_name = creator.get_full_name().strip()
+        if full_name:
+            return full_name
+
+        if creator.first_name:
+            return creator.first_name
+
+        if creator.username:
+            return creator.username
+
+        return creator.email or ""
 
 
 class ListingSerializer(serializers.ModelSerializer):

@@ -12,6 +12,10 @@ export function EventCard({ event }) {
           <span className="info-badge category">{event.category}</span>
           <span className="event-date">{event.date}</span>
         </div>
+
+        {event.host_company ? (
+          <p className="event-host">Hostes av {event.host_company}</p>
+        ) : null}
         
         <h2 className="event-title">{event.title}</h2>
         
@@ -19,8 +23,6 @@ export function EventCard({ event }) {
           <span className="meta-item"> {event.places}</span>
           <span className="meta-item"> {event.capacity} plasser</span>
         </div>
-
-
       </div>
 
       {imageUrl && (

@@ -92,6 +92,25 @@ class CreateContentApiTests(APITestCase):
         self.assertEqual(len(response.data), 1)
         self.assertEqual(response.data[0]["title"], "Min samling")
 
+    def test_event_list_returns_host_company_name(self):
+        self.user.first_name = "Example AS"
+        self.user.save(update_fields=["first_name"])
+
+        Event.objects.create(
+            title="Karrieredag",
+            category="Karriere",
+            date="2026-04-11",
+            description="Møt bedriften.",
+            places="Oslo",
+            capacity=40,
+            created_by=self.user,
+        )
+
+        response = self.client.get("/api/events/", format="json")
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data[0]["host_company"], "Example AS")
+
     def test_event_can_be_updated(self):
         event = Event.objects.create(
             title="Fagkveld",
