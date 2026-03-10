@@ -65,6 +65,20 @@ class Listing(models.Model):
 
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
 
+    def __init__(self, *args, **kwargs):
+        location = kwargs.pop('location', None)
+        super().__init__(*args, **kwargs)
+        if location is not None and not self.city:
+            self.city = location
+
+    @property
+    def location(self):
+        return self.city
+
+    @location.setter
+    def location(self, value):
+        self.city = value
+
 
     def save(self, *args, **kwargs):
         if self.city:

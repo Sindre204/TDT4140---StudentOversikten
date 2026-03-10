@@ -10,7 +10,7 @@ COMPANY_GROUP_NAME = 'company'
 #Translates between DB-objekt and JSON
 
 class EventSerializer(serializers.ModelSerializer):
-    image = serializers.ImageField(use_url=True)
+    image = serializers.ImageField(use_url=True, required=False, allow_null=True)
 
     class Meta:
         model = Event
@@ -18,11 +18,23 @@ class EventSerializer(serializers.ModelSerializer):
 
 
 class ListingSerializer(serializers.ModelSerializer):
-    image = serializers.ImageField(use_url=True)
+    image = serializers.ImageField(use_url=True, required=False, allow_null=True)
+    location = serializers.SerializerMethodField()
 
     class Meta:
         model = Listing
         fields = '__all__'
+
+    def get_location(self, obj):
+        return obj.city
+
+    def to_internal_value(self, data):
+        mutable_data = data.copy()
+
+        if mutable_data.get('location') and not mutable_data.get('city'):
+            mutable_data['city'] = mutable_data['location']
+
+        return super().to_internal_value(mutable_data)
 
 
 class CompanySerializer(serializers.ModelSerializer):
