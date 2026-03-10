@@ -1,203 +1,120 @@
-.administration-page {
-  width: min(960px, calc(100% - 3rem));
+.admin-page-container {
+  max-width: 1000px;
   margin: 0 auto;
-  padding: 3rem 0 4rem;
-  color: #16324f;
+  padding: 60px 20px;
 }
 
-.administration-hero {
-  margin-bottom: 2rem;
+.admin-hero {
+  text-align: center;
+  margin-bottom: 50px;
 }
 
-.administration-kicker {
-  margin: 0;
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #0f766e;
+.admin-main-title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: var(--text-title); /* Bruker variabelen fra EventCard.css */
+  margin-bottom: 10px;
+  letter-spacing: -0.04em;
 }
 
-.administration-hero h1 {
-  margin: 0.4rem 0;
-  font-size: clamp(2rem, 4vw, 3rem);
+.admin-subtitle {
+  font-size: 1.2rem;
+  color: var(--text-body);
 }
 
-.administration-subtitle {
-  margin: 0;
-  max-width: 42rem;
-  line-height: 1.6;
-}
-
-.administration-grid {
+.admin-action-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 60px;
 }
 
-.administration-section {
-  margin-top: 2.5rem;
+.admin-action-card {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  border: 1px solid var(--card-border);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+  text-align: center;
 }
 
-.administration-section-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 1rem;
+.admin-action-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: var(--text-title);
 }
 
-.administration-card,
-.administration-form {
-  border: 1px solid rgba(15, 118, 110, 0.2);
-  border-radius: 1rem;
-  background: linear-gradient(180deg, #ffffff 0%, #ecfeff 100%);
-  box-shadow: 0 18px 40px rgba(22, 50, 79, 0.08);
-}
-
-.administration-card {
-  padding: 1.5rem;
-}
-
-.administration-card h2 {
-  margin-top: 0;
-}
-
-.administration-card p {
-  line-height: 1.6;
-}
-
-.administration-link {
-  display: inline-flex;
-  margin-top: 0.75rem;
-  font-weight: 700;
-  color: #0f766e;
+.admin-btn-primary {
+  display: inline-block;
+  margin-top: 15px;
+  background: var(--accent-blue);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 12px;
   text-decoration: none;
-}
-
-.administration-list {
-  display: grid;
-  gap: 0.9rem;
-}
-
-.administration-item {
-  display: grid;
-  gap: 0.85rem;
-  padding: 1rem 1.25rem;
-  border: 1px solid rgba(15, 118, 110, 0.14);
-  border-radius: 1rem;
-  background: #ffffff;
-}
-
-.administration-item-top {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1rem;
-}
-
-.administration-item-main {
-  flex: 1;
-  min-width: 0;
-}
-
-.administration-item-actions {
-  display: inline-flex;
-  align-items: flex-end;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.administration-item h3,
-.administration-item p {
-  margin: 0;
-}
-
-.administration-item p {
-  margin-top: 0.3rem;
-  color: rgba(22, 50, 79, 0.72);
-}
-
-.administration-registrations {
-  border-top: 1px solid rgba(15, 118, 110, 0.14);
-  padding-top: 0.8rem;
-}
-
-.administration-link-button {
-  margin-top: 0;
-  border: 0;
-  background: transparent;
-  padding: 0;
-  cursor: pointer;
-}
-
-.administration-form {
-  display: grid;
-  gap: 1rem;
-  padding: 1.5rem;
-}
-
-.administration-form label {
-  display: grid;
-  gap: 0.45rem;
-  font-weight: 600;
-}
-
-.administration-form input,
-.administration-form select,
-.administration-form textarea {
-  width: 100%;
-  border: 1px solid rgba(22, 50, 79, 0.18);
-  border-radius: 0.75rem;
-  padding: 0.85rem 1rem;
-  font: inherit;
-  background-color: #ffffff;
-  box-sizing: border-box;
-}
-
-.administration-form textarea {
-  resize: vertical;
-}
-
-.administration-form button {
-  width: fit-content;
-  border: 0;
-  border-radius: 999px;
-  padding: 0.9rem 1.4rem;
-  font: inherit;
   font-weight: 700;
-  color: #ffffff;
-  background: linear-gradient(135deg, #0f766e 0%, #1d4ed8 100%);
-  cursor: pointer;
+  transition: transform 0.2s;
 }
 
-.administration-form button:disabled {
-  cursor: wait;
-  opacity: 0.75;
+.admin-btn-primary:hover {
+  transform: translateY(-2px);
 }
 
-.administration-error {
+.admin-content-section {
+  margin-top: 40px;
+}
+
+.admin-section-header h2 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: var(--text-title);
+}
+
+.admin-item-card {
+  background: white;
+  padding: 20px 25px;
+  border-radius: 16px;
+  border: 1px solid var(--card-border);
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.admin-item-info h3 {
   margin: 0;
-  color: #b91c1c;
-  font-weight: 600;
+  font-size: 1.25rem;
 }
 
-@media (max-width: 640px) {
-  .administration-page {
-    width: min(100%, calc(100% - 1.5rem));
-    padding-top: 2rem;
-  }
+.admin-item-btns {
+  display: flex;
+  gap: 10px;
+}
 
-  .administration-section-header,
-  .administration-item-top {
-    align-items: flex-start;
-    flex-direction: column;
-  }
+.admin-btn-outline {
+  background: #f1f5f9;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--text-body);
+}
 
-  .administration-item-actions {
-    width: 100%;
-    align-items: flex-start;
-    flex-direction: row;
-    gap: 1rem;
-  }
+.admin-btn-edit {
+  color: var(--accent-blue);
+  text-decoration: none;
+  font-weight: 600;
+  padding: 8px;
+}
+
+.admin-registration-details {
+  border-top: 1px solid #f1f5f9;
+  padding-top: 15px;
+  font-size: 0.95rem;
+}
+
+@media (max-width: 600px) {
+  .admin-action-grid { grid-template-columns: 1fr; }
+  .admin-main-title { font-size: 2.5rem; }
 }

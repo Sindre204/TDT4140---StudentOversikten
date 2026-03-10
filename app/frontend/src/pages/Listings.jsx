@@ -1,60 +1,48 @@
-import { useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ListingCard } from "../components/LisitingCard";
+import { ListingCard } from "../components/LisitingCard"; // Beholder filnavnet ditt
 import { fetchAds } from "../services/api";
 
 export function Listings() {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const [listings, setListings] = useState([]);
   const [selectedCity, setSelectedCity] = useState("All");
   const [sortOrder, setSortOrder] = useState("newest");
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    fetchAds().then(data => setListings(data));
+    fetchAds().then(data => setListings(data || []));
   }, []);
 
-  const cities = [
-    "All",
-    ...new Set(listings.map(l => l.city))
-  ];
+  const cities = ["All", ...new Set(listings.map(l => l.city).filter(Boolean))];
 
   const filteredListings = listings
     .filter(listing => {
-      const matchesCity =
-        selectedCity === "All" || listing.city === selectedCity;
-
-      const matchesSearch =
-        listing.title?.toLowerCase().includes(searchTerm.toLowerCase());
-
+      const matchesCity = selectedCity === "All" || listing.city === selectedCity;
+      const matchesSearch = listing.title?.toLowerCase().includes(searchTerm.toLowerCase());
       return matchesCity && matchesSearch;
     })
     .sort((a, b) => {
-      return sortOrder === "newest"
-        ? new Date(b.applicationDeadline) - new Date(a.applicationDeadline)
-        : new Date(a.applicationDeadline) - new Date(b.applicationDeadline);
+      const dateA = new Date(a.applicationDeadline);
+      const dateB = new Date(b.applicationDeadline);
+      return sortOrder === "newest" ? dateB - dateA : dateA - dateB;
     });
 
   return (
-    <>
-      <h1 className="Listings-header"> {t("jobListings")} </h1>
+    <div className="listings-container">
+      <h1 className="listings-header">{t("jobListings")}</h1>
 
-      <p className="listings-subtitle">
-        {t("exploreListings")}
-      </p>
+      <p className="listings-subtitle">{t("exploreListings")}</p>
 
       <div className="listings-controls">
-        <input
+        <input 
           type="text"
-          placeholder = {t("searchListings")}
+          placeholder={t("searchListings")}
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
 
-        <select
-          value={selectedCity}
-          onChange={(e) => setSelectedCity(e.target.value)}
-        >
+        <select value={selectedCity} onChange={(e) => setSelectedCity(e.target.value)}>
           {cities.map(city => (
             <option key={city} value={city}>
               {city === "All" ? t("allCities") : city}
@@ -68,11 +56,11 @@ export function Listings() {
         </select>
       </div>
 
-      <div className="listing-grid">
+      <div className="listings-grid">
         {filteredListings.map((listing) => (
           <ListingCard key={listing.id} listing={listing} />
         ))}
       </div>
-    </>
+    </div>
   );
 }

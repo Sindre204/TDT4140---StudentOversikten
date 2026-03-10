@@ -1,93 +1,86 @@
-footer {
-  background-color: #f5f0e6; /* Beige */
-  text-align: center;
-  padding: 2.5rem 1.5rem;
-  font-size: 0.95rem;
-  color: #2b2b2b;
-  margin-top: 60px;
-  border-top: 1px solid #e2d9c8;
+:root {
+  --footer-bg: #ffffff;
+  --footer-border: #f1f5f9;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --accent: #3b82f6;
 }
 
-/* Overskrift / navn */
+[data-theme='dark'] {
+  --footer-bg: #0f172a;
+  --footer-border: #1e293b;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+}
+
+.footer {
+  background-color: var(--footer-bg);
+  border-top: 1px solid var(--footer-border);
+  padding: 3rem 2rem;
+  margin-top: 80px;
+  transition: all 0.3s ease;
+}
+
+.footer-content {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  text-align: center;
+}
+
 .footer-title {
-  font-size: 1.3rem;
-  font-weight: 600;
-  margin-bottom: 0.4rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: -0.01em;
 }
 
 .footer-sub {
-  margin-bottom: 1rem;
-  color: #555;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
 }
 
-/* Kontaktinfo */
-.footer-contact {
-  margin-bottom: 1.5rem;
+.footer-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
   font-size: 0.9rem;
-  color: #444;
+  color: var(--text-muted);
 }
 
-/* ICON SECTION */
-
-.footer-icons {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-  margin-bottom: 1.5rem;
+.footer-link {
+  text-decoration: none;
+  color: var(--text-muted);
+  transition: color 0.2s;
 }
 
-.footer-icons .icon {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background-color: #ffffff;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-
-  transition: background-color 0.3s, transform 0.3s ease, opacity 0.3s ease;
-  cursor: pointer;
+.footer-link:hover {
+  color: var(--accent);
 }
 
-.footer-icons .icon img {
-  width: 70%;
-  height: 70%;
-  object-fit: contain;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+.footer-divider {
+  color: var(--footer-border);
+  user-select: none;
 }
 
-.footer-icons .icon:hover {
-  transform: scale(1.1);
-  opacity: 0.9;
-}
-
-/* Hover farger */
-#mail:hover {
-  background-color: #D44638;
-}
-
-#linkedin:hover {
-  background-color: #0A66C2;
-}
-
-#GitHubPriv:hover,
-#GitHubNtnu:hover {
-  background-color: #6e5494;
-}
-
-#mail,
-#linkedin {
-  width: 55px;
-  height: 55px;
-}
-
-/* Bottom copyright */
 .footer-bottom {
-  font-size: 0.8rem;
-  color: #777;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  opacity: 0.7;
   margin-top: 1rem;
+}
+
+/* Enkel responsivitet */
+@media (max-width: 480px) {
+  .footer-info {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .footer-divider {
+    display: none;
+  }
 }

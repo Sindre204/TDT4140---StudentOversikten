@@ -1,76 +1,98 @@
+:root {
+  --card-bg: #ffffff;
+  --card-border: #e2e8f0;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --accent-blue: #3b82f6;
+  --badge-bg: #f1f5f9;
+}
+
+[data-theme='dark'] {
+  --card-bg: #1e293b;
+  --card-border: #334155;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --badge-bg: #334155;
+}
+
 .companies-grid {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.25rem;
   max-width: 800px;
-  margin: 0 auto;
+  margin: 40px auto;
   padding: 20px;
-  font-family: "Inter", sans-serif;
 }
 
 .company-card {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #e3d5ca;
-  padding: 15px 20px;
-  border-radius: 10px;
-  border-left: 5px solid #d6ccc2;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s;
-  margin-bottom: 20px;
+  background: var(--card-bg);
+  padding: 20px 24px;
+  border-radius: 16px;
+  border: 1px solid var(--card-border);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
 }
 
 .company-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  border-color: var(--accent-blue);
 }
 
 .company-content {
   flex: 1;
 }
 
-.company-right {
-  display: flex;
-  align-items: center;
-}
-
 .company-name {
-  margin: 0 0 8px 0;
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #1a1a1a;
-}
-
-.company-meta {
-  display: flex;
-  gap: 8px;
+  margin: 0 0 6px 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: -0.02em;
 }
 
 .company-badge {
-  background: #f0f0f0;
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 0.85rem;
-  font-weight: bold;
-  color: #555;
+  background: var(--badge-bg);
+  padding: 6px 14px;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--accent-blue);
 }
 
-.company-image {
-  width: 140px;
-  height: 80px;
-  object-fit: cover;
-  border-radius: 8px;
+.company-image, .company-image-fallback {
+  width: 120px;
+  height: 70px;
+  border-radius: 12px;
+  object-fit: contain; /* Endret til contain for logoer */
+  background: var(--badge-bg);
+  padding: 8px; /* Gir logoer litt pusterom */
 }
 
 .company-image-fallback {
-  width: 140px;
-  height: 80px;
-  border-radius: 8px;
-  background: #f0f2f5;
-  color: #777;
-  font-size: 0.75rem;
   display: flex;
   align-items: center;
   justify-content: center;
+  color: var(--text-muted);
+  font-weight: 800;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+}
+
+/* Responsiv */
+@media (max-width: 500px) {
+  .company-card {
+    padding: 16px;
+  }
+  .company-image, .company-image-fallback {
+    width: 80px;
+    height: 50px;
+  }
+  .company-name {
+    font-size: 1.2rem;
+  }
 }

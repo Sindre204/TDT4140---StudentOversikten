@@ -1,74 +1,111 @@
-/* Generert av chatGPT av Henrik Kran 16/02/2026 */
+:root {
+  --nav-bg: rgba(255, 255, 255, 0.8);
+  --nav-border: rgba(0, 0, 0, 0.05);
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --accent-blue: #3b82f6;
+  --accent-hover: #2563eb;
+  --glass-blur: blur(10px);
+}
+
+[data-theme='dark'] {
+  --nav-bg: rgba(15, 23, 42, 0.8);
+  --nav-border: rgba(255, 255, 255, 0.1);
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --accent-blue: #60a5fa;
+  --accent-hover: #3b82f6;
+}
+
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 40px;
-  /* Matcher den lyse bakgrunnen på siden din */
-  background-color: #f4f4f1; 
-  border-bottom: 1px solid rgba(0,0,0,0.05);
-  margin-bottom: 0; /* Siden siden din har egen padding */
+  padding: 0.75rem 2rem;
+  background-color: var(--nav-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-bottom: 1px solid var(--nav-border);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  transition: all 0.3s ease ;
 }
 
-.navbar-links, .navbar-login {
+.navbar-links, .navbar-actions {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 1.5rem;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: var(--text-muted);
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: color 0.2s ease;
+  padding: 0.5rem 0;
+  position: relative;
+}
+
+.nav-link:hover {
+  color: var(--text-main);
+}
+
+.nav-link.active {
+  color: var(--accent-blue);
+}
+
+.nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--accent-blue);
+  border-radius: 2px;
+}
+
+.btn-primary, .btn-admin {
+  text-decoration: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background-color: var(--accent-blue);
+  color: white;
+  box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.2);
+}
+
+.btn-primary:hover {
+  background-color: var(--accent-hover);
+  transform: translateY(-1px);
+}
+
+.btn-admin {
+  background-color: transparent;
+  border: 1px solid var(--accent-blue);
+  color: var(--accent-blue);
+}
+
+.btn-admin:hover {
+  background-color: rgba(59, 130, 246, 0.05);
 }
 
 .role-badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 6px 12px;
-  border-radius: 999px;
-  background: linear-gradient(135deg, #0f766e 0%, #0ea5e9 100%);
-  color: #ffffff;
-  font-size: 13px;
+  padding: 0.25rem 0.75rem;
+  background: rgba(59, 130, 246, 0.1);
+  color: var(--accent-blue);
+  border-radius: 20px;
+  font-size: 0.75rem;
   font-weight: 700;
-  letter-spacing: 0.02em;
+  text-transform: uppercase;
 }
-
-/* Base-stil for alle knapper i navbaren */
-button {
-  padding: 10px 15px;
-  font-size: 15px;
-  font-weight: 500;
-  cursor: pointer;
-  border: none; /* Fjerner rammene for et renere uttrykk */
-  border-radius: 8px;
-  background-color: transparent;
-  color: #4a4a4a;
-  transition: all 0.3s ease;
-}
-
-/* Hover-effekt for vanlige lenker (Home, Events, Listings) */
-.navbar-links button:hover {
-  background-color: rgba(0, 0, 0, 0.04);
-  color: #000;
-}
-
-/* Primærknapper (Log in og Admin) */
-.navbar-login button, 
-#admin button {
-  background-color: #5d87ff; /* Den blåfargen du bruker i bildene */
-  color: white;
-  padding: 10px 22px;
-  box-shadow: 0 2px 6px rgba(93, 135, 255, 0.2);
-}
-
-.navbar-login button:hover, 
-#admin button:hover {
-  background-color: #4870e6;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(93, 135, 255, 0.3);
-}
-
-/* Spesifikk justering for Admin-knappen hvis den skal skille seg litt ut */
-#admin button {
-  background-color: #5d87ff; 
-  margin-left: 5px;
-}
-
 
 .language-switcher {
   position: relative;
@@ -77,40 +114,48 @@ button {
 .language-btn {
   background: none;
   border: none;
+  font-size: 1.25rem;
   cursor: pointer;
-  font-size: 20px;
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+
+.language-btn:hover {
+  background: rgba(0, 0, 0, 0.05);
 }
 
 .language-dropdown {
   position: absolute;
   right: 0;
-  top: 110%;
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  list-style: none;
-  padding: 4px 0;
-  margin: 0;
-  min-width: 130px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  z-index: 1000;
+  top: calc(100% + 10px);
+  background: var(--nav-bg);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--nav-border);
+  border-radius: 12px;
+  min-width: 160px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
-.language-dropdown li button {
-  width: 100%;
-  text-align: left;
-  padding: 8px 16px;
-  border: none;
-  cursor: pointer;
+.lang-opt {
   background: none;
-  color: black;
+  border: none;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  color: var(--text-main);
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.2s;
 }
 
-.language-dropdown li button:hover {
-  background: #f5f5f5;
+.lang-opt:hover {
+  background: rgba(59, 130, 246, 0.1);
 }
 
-.language-dropdown li button.active {
-  background: #f0f0f0;
-  font-weight: bold;
+.lang-opt.active {
+  font-weight: 700;
+  color: var(--accent-blue);
 }

@@ -1,14 +1,14 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useAuth } from '../context/AuthContext';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import './Navbar.css';
 
-
 export function Navbar() {
   const { user } = useAuth();
   const { t, i18n } = useTranslation();
   const [open, setOpen] = useState(false);
+  const location = useLocation();
 
   const switchLanguage = (lang) => {
     i18n.changeLanguage(lang);
@@ -16,38 +16,35 @@ export function Navbar() {
     setOpen(false);
   };
 
+  const isActive = (path) => location.pathname === path;
+
   return (
     <nav className="navbar">
       <div className="navbar-links">
-        <Link to='/'><button> {t("home")} </button></Link>
-        <Link to='/Events'><button> {t("events")} </button></Link>
-        <Link to='/Listings'><button> {t("listings")} </button></Link>
-        <Link to='/Companies'><button> Firmaer </button></Link>
+        <Link to='/' className={isActive('/') ? 'nav-link active' : 'nav-link'}>{t("home")}</Link>
+        <Link to='/Events' className={isActive('/Events') ? 'nav-link active' : 'nav-link'}>{t("events")}</Link>
+        <Link to='/Listings' className={isActive('/Listings') ? 'nav-link active' : 'nav-link'}>{t("listings")}</Link>
+        <Link to='/Companies' className={isActive('/Companies') ? 'nav-link active' : 'nav-link'}>Firmaer</Link>
       </div>
 
-
-
-      <div className="navbar-login">
+      <div className="navbar-actions">
         {user ? (
           <>
             {user.role === 'company' && <span className="role-badge">Bedrift</span>}
-            <Link to='/MyProfile'><button> {t("myProfile")} </button></Link>
+            <Link to='/MyProfile' className="btn-primary">{t("myProfile")}</Link>
+            
+            {(user.role === 'company' || user.role === 'admin') && (
+              <div className="admin-section">
+                {user.role === 'company' ? (
+                  <Link to='/administration' className="btn-admin">Administrasjon</Link>
+                ) : (
+                  <a href="http://127.0.0.1:8000/admin/" className="btn-admin">Admin</a>
+                )}
+              </div>
+            )}
           </>
         ) : (
-          <Link to='/LogIn'><button> {t("logIn")} </button></Link>
-        )}
-
-        {user && user.role === 'company' && (
-          <Link to='/administration'>
-            <button id="admin"> Administrasjon </button>
-          </Link>
-        )}
-
-
-        {user && user.role === 'admin' && (
-          <a href="http://127.0.0.1:8000/admin/">
-            <button id="admin"> Admin </button>
-          </a>
+          <Link to='/LogIn' className="btn-primary">{t("logIn")}</Link>
         )}
 
         <div className="language-switcher">
@@ -56,27 +53,21 @@ export function Navbar() {
           </button>
 
           {open && (
-            <ul className="language-dropdown">
-              <li>
-                <button
-                  className={i18n.language === "no" ? "active" : ""}
-                  onClick={() => switchLanguage("no")}>
-                  🇳🇴 Norsk
-                </button>
-              </li>
-              <li>
-                <button
-                  className={i18n.language === "pt" ? "active" : ""}
-                  onClick={() => switchLanguage("pt")}>
-                  🇵🇹 Português
-                </button>
-              </li>
-            </ul>
+            <div className="language-dropdown">
+              <button
+                className={i18n.language === "no" ? "lang-opt active" : "lang-opt"}
+                onClick={() => switchLanguage("no")}>
+                🇳🇴 Norsk
+              </button>
+              <button
+                className={i18n.language === "pt" ? "lang-opt active" : "lang-opt"}
+                onClick={() => switchLanguage("pt")}>
+                🇵🇹 Português
+              </button>
+            </div>
           )}
         </div>
-
       </div>
     </nav>
-  )
-
-} 
+  );
+}

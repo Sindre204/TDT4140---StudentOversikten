@@ -20,45 +20,28 @@ export function Administration() {
   const [eventRegistrationError, setEventRegistrationError] = useState({});
 
   useEffect(() => {
-    if (!user || user.role !== "company") {
-      return undefined;
-    }
-
+    if (!user || user.role !== "company") return;
     let isActive = true;
 
     async function loadCreatedContent() {
       try {
         setIsLoading(true);
-        setError("");
-
         const [eventData, listingData] = await Promise.all([
           fetchEventsByCreator(user.id),
           fetchAdsByCreator(user.id),
         ]);
-
-        if (!isActive) {
-          return;
-        }
-
-        setEvents(eventData);
-        setListings(listingData);
-      } catch (loadError) {
-        if (!isActive) {
-          return;
-        }
-        setError(loadError.message);
-      } finally {
         if (isActive) {
-          setIsLoading(false);
+          setEvents(eventData);
+          setListings(listingData);
         }
+      } catch (loadError) {
+        if (isActive) setError(loadError.message);
+      } finally {
+        if (isActive) setIsLoading(false);
       }
     }
-
     loadCreatedContent();
-
-    return () => {
-      isActive = false;
-    };
+    return () => { isActive = false; };
   }, [user]);
 
   if (!user || user.role !== "company") {
@@ -71,16 +54,11 @@ export function Administration() {
       setExpandedEvents((current) => ({ ...current, [eventId]: false }));
       return;
     }
-
     setExpandedEvents((current) => ({ ...current, [eventId]: true }));
-
-    if (eventRegistrations[eventId]) {
-      return;
-    }
+    if (eventRegistrations[eventId]) return;
 
     try {
       setEventRegistrationLoading((current) => ({ ...current, [eventId]: true }));
-      setEventRegistrationError((current) => ({ ...current, [eventId]: "" }));
       const data = await fetchEventRegistrationsForCompany(eventId, user.id);
       setEventRegistrations((current) => ({ ...current, [eventId]: data }));
     } catch (loadError) {
@@ -91,135 +69,61 @@ export function Administration() {
   };
 
   return (
-    <section className="administration-page">
-      <div className="administration-hero">
-        <p className="administration-kicker">Administrasjon</p>
-        <h1>Opprett innhold</h1>
-        <p className="administration-subtitle">
+    <div className="admin-page-container">
+      <header className="admin-hero">
+        <h1 className="admin-main-title">Administrasjon</h1>
+        <p className="admin-subtitle">
           Velg hva du vil publisere. Alt du oppretter her lagres direkte i systemet.
         </p>
-      </div>
+      </header>
 
-      <div className="administration-grid">
-        <article className="administration-card">
+      <div className="admin-action-grid">
+        <div className="admin-action-card">
           <h2>Nytt arrangement</h2>
-          <p>Opprett et arrangement med de samme feltene som i Django-administrasjonen.</p>
-          <Link to="/administration/events/new" className="administration-link">
-            Ga til arrangementskjema
-          </Link>
-        </article>
+          <p>Lag et nytt event for studenter.</p>
+          <Link to="/administration/events/new" className="admin-btn-primary">Opprett arrangement</Link>
+        </div>
 
-        <article className="administration-card">
+        <div className="admin-action-card">
           <h2>Ny jobbannonse</h2>
-          <p>Opprett en jobbannonse og publiser den direkte i backend.</p>
-          <Link to="/administration/ads/new" className="administration-link">
-            Ga til jobbannonse
-          </Link>
-        </article>
+          <p>Publiser en ledig stilling.</p>
+          <Link to="/administration/ads/new" className="admin-btn-primary">Opprett jobbannonse</Link>
+        </div>
       </div>
 
-      <section className="administration-section">
-        <div className="administration-section-header">
+      <section className="admin-content-section">
+        <div className="admin-section-header">
           <h2>Dine arrangementer</h2>
-          <Link to="/administration/events/new" className="administration-link">
-            Opprett nytt
-          </Link>
         </div>
-
-        {isLoading ? <p>Laster arrangementer...</p> : null}
-        {!isLoading && !events.length ? <p>Du har ikke opprettet noen arrangementer enda.</p> : null}
-
-        {!isLoading && events.length ? (
-          <div className="administration-list">
-            {events.map((event) => (
-              <article key={event.id} className="administration-item">
-                <div className="administration-item-top">
-                  <div className="administration-item-main">
-                    <h3>{event.title}</h3>
-                    <p>
-                      {event.date} · {event.places}
-                    </p>
-                  </div>
-
-                  <div className="administration-item-actions">
-                    <button
-                      type="button"
-                      className="administration-link administration-link-button"
-                      onClick={() => handleToggleRegistrations(event.id)}
-                    >
-                      {expandedEvents[event.id] ? "Skjul påmeldte" : "Vis påmeldte"}
-                    </button>
-                    <Link to={`/administration/events/${event.id}/edit`} className="administration-link">
-                      Rediger
-                    </Link>
-                  </div>
+        <div className="admin-list">
+          {events.map((event) => (
+            <article key={event.id} className="admin-item-card">
+              <div className="admin-item-info">
+                <h3>{event.title}</h3>
+                <p>{event.date} · {event.places}</p>
+              </div>
+              <div className="admin-item-btns">
+                <button onClick={() => handleToggleRegistrations(event.id)} className="admin-btn-outline">
+                  {expandedEvents[event.id] ? "Skjul påmeldte" : "Vis påmeldte"}
+                </button>
+                <Link to={`/administration/events/${event.id}/edit`} className="admin-btn-edit">Rediger</Link>
+              </div>
+              
+              {expandedEvents[event.id] && (
+                <div className="admin-registration-details">
+                  {eventRegistrationLoading[event.id] ? <p>Laster...</p> : (
+                    <ul>
+                      {eventRegistrations[event.id]?.participants.map(p => (
+                        <li key={p.id}>{p.fullName} ({p.email})</li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
-
-                {expandedEvents[event.id] ? (
-                  <div className="administration-registrations">
-                    {eventRegistrationLoading[event.id] ? <p>Laster påmeldte...</p> : null}
-                    {eventRegistrationError[event.id] ? (
-                      <p className="administration-error">{eventRegistrationError[event.id]}</p>
-                    ) : null}
-
-                    {eventRegistrations[event.id] ? (
-                      <div>
-                        <p>Antall påmeldte: {eventRegistrations[event.id].registrations_count}</p>
-                        {!eventRegistrations[event.id].participants.length ? (
-                          <p>Ingen er påmeldt enda.</p>
-                        ) : (
-                          <ul>
-                            {eventRegistrations[event.id].participants.map((participant) => (
-                              <li key={participant.id}>
-                                {participant.fullName} ({participant.email})
-                              </li>
-                            ))}
-                          </ul>
-                        )}
-                      </div>
-                    ) : null}
-                  </div>
-                ) : null}
-              </article>
-            ))}
-          </div>
-        ) : null}
-      </section>
-
-      <section className="administration-section">
-        <div className="administration-section-header">
-          <h2>Dine jobbannonser</h2>
-          <Link to="/administration/ads/new" className="administration-link">
-            Opprett ny
-          </Link>
+              )}
+            </article>
+          ))}
         </div>
-
-        {error ? <p className="administration-error">{error}</p> : null}
-        {isLoading ? <p>Laster jobbannonser...</p> : null}
-        {!isLoading && !listings.length ? <p>Du har ikke opprettet noen jobbannonser enda.</p> : null}
-
-        {!isLoading && listings.length ? (
-          <div className="administration-list">
-            {listings.map((listing) => (
-              <article key={listing.id} className="administration-item">
-                <div className="administration-item-top">
-                  <div className="administration-item-main">
-                    <h3>{listing.title}</h3>
-                    <p>
-                      {listing.company} · {listing.city}
-                    </p>
-                  </div>
-                  <div className="administration-item-actions">
-                    <Link to={`/administration/ads/${listing.id}/edit`} className="administration-link">
-                      Rediger
-                    </Link>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
-        ) : null}
       </section>
-    </section>
+    </div>
   );
 }
