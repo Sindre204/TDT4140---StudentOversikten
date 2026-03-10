@@ -77,3 +77,133 @@
   color: #16a34a;
 }
 
+
+.participants-section {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border: 1px solid rgba(196, 168, 128, 0.38);
+  border-radius: 16px;
+  background: linear-gradient(180deg, #fbf6ee 0%, #f5ede1 100%);
+  box-shadow: 0 12px 28px rgba(126, 92, 53, 0.08);
+}
+
+.participants-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.participants-kicker {
+  margin: 0 0 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #9a6b3f;
+}
+
+.participants-header h2 {
+  margin: 0;
+  font-size: 1.35rem;
+  color: #111827;
+}
+
+.participants-count {
+  min-width: 3rem;
+  padding: 0.6rem 0.85rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #d9b88f 0%, #c79b68 100%);
+  color: #fffaf3;
+  border: 1px solid rgba(160, 118, 72, 0.25);
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: center;
+  box-shadow: 0 8px 18px rgba(160, 118, 72, 0.18);
+}
+
+.participants-list {
+  display: grid;
+  gap: 0.85rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  max-height: 22rem;
+  overflow-y: auto;
+  padding-right: 0.35rem;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(160, 118, 72, 0.45) transparent;
+}
+
+.participants-list::-webkit-scrollbar {
+  width: 0.55rem;
+}
+
+.participants-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.participants-list::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(160, 118, 72, 0.45);
+}
+
+.participants-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(160, 118, 72, 0.65);
+}
+
+.participants-item {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.9rem 1rem;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(196, 168, 128, 0.24);
+  box-shadow: 0 8px 20px rgba(126, 92, 53, 0.05);
+}
+
+.participants-avatar {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #d6b08a 0%, #b9854f 100%);
+  color: #fffaf3;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.participants-name,
+.participants-email {
+  margin: 0;
+}
+
+.participants-name {
+  font-weight: 700;
+  color: #111827;
+}
+
+.participants-email {
+  margin-top: 0.2rem;
+  color: #9a6b3f;
+  font-size: 0.95rem;
+}
+
+.participants-empty {
+  margin: 0;
+  padding: 1rem;
+  border-radius: 12px;
+  background: rgba(255, 250, 243, 0.92);
+  border: 1px dashed rgba(160, 118, 72, 0.35);
+  color: #9a6b3f;
+}
+
+@media (max-width: 640px) {
+  .participants-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

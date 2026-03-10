@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
   fetchEventById,
+  fetchEventParticipants,
   fetchEventRegistrationStatus,
   registerForEvent,
   unregisterFromEvent,
@@ -23,6 +24,8 @@ export function EventDetail() {
   const [error, setError] = useState("");
   const [isRegistered, setIsRegistered] = useState(false);
   const [message, setMessage] = useState("");
+  const [participants, setParticipants] = useState([]);
+  const [participantCount, setParticipantCount] = useState(0);
 
   useEffect(() => {
     async function loadEvent() {
@@ -31,8 +34,13 @@ export function EventDetail() {
         setError("");
         setMessage("");
 
-        const data = await fetchEventById(id);
+        const [data, participantData] = await Promise.all([
+          fetchEventById(id),
+          fetchEventParticipants(id),
+        ]);
         setEvent(data);
+        setParticipants(participantData.participants || []);
+        setParticipantCount(participantData.registrations_count || 0);
 
         if (user?.id && canRegister) {
           const registration = await fetchEventRegistrationStatus(id, user.id);
@@ -54,7 +62,7 @@ export function EventDetail() {
     setMessage("");
 
     if (!user?.id) {
-      setMessage("Du ma vare logget inn for a melde deg pa.");
+      setMessage("Du må være logget inn for å melde deg på.");
       return;
     }
 
@@ -62,14 +70,31 @@ export function EventDetail() {
       if (isRegistered) {
         await unregisterFromEvent(id, user.id);
         setIsRegistered(false);
+        setParticipants((current) => current.filter((participant) => participant.id !== user.id));
+        setParticipantCount((current) => Math.max(0, current - 1));
         setMessage("Du har forlatt arrangementet.");
       } else {
         await registerForEvent(id, user.id);
         setIsRegistered(true);
+        setParticipants((current) => {
+          if (current.some((participant) => participant.id === user.id)) {
+            return current;
+          }
+
+          return [
+            ...current,
+            {
+              id: user.id,
+              fullName: user.fullName || user.email,
+              email: user.email,
+            },
+          ];
+        });
+        setParticipantCount((current) => current + 1);
         setMessage("Du er nå påmeldt.");
       }
     } catch (_err) {
-      setMessage("Kunne ikke oppdatere påmelding akkurat na.");
+      setMessage("Kunne ikke oppdatere påmelding akkurat nå.");
     }
   }
 
@@ -85,7 +110,6 @@ export function EventDetail() {
 
   return (
     <section className="detail-page">
-
       <button
         type="button"
         className="back-button"
@@ -123,6 +147,34 @@ export function EventDetail() {
       ) : null}
 
       {message && <p className="register-message">{message}</p>}
+
+      <section className="participants-section" aria-labelledby="participants-heading">
+        <div className="participants-header">
+          <div>
+            <p className="participants-kicker">Påmeldte</p>
+            <h2 id="participants-heading">Hvem kommer?</h2>
+          </div>
+          <div className="participants-count">{participantCount}</div>
+        </div>
+
+        {!participants.length ? (
+          <p className="participants-empty">Ingen er påmeldt enda.</p>
+        ) : (
+          <ul className="participants-list">
+            {participants.map((participant) => (
+              <li key={participant.id} className="participants-item">
+                <div className="participants-avatar" aria-hidden="true">
+                  {getParticipantInitials(participant.fullName, participant.email)}
+                </div>
+                <div>
+                  <p className="participants-name">{participant.fullName}</p>
+                  <p className="participants-email">{participant.email}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
     </section>
   );
 }
@@ -137,4 +189,12 @@ function getImageUrl(imagePath) {
   const baseUrl = "http://127.0.0.1:8000";
 
   return imagePath.startsWith("/") ? `${baseUrl}${imagePath}` : `${baseUrl}/${imagePath}`;
+}
+
+function getParticipantInitials(fullName, email) {
+  const source = (fullName || email || "").trim();
+  if (!source) return "?";
+
+  const parts = source.split(/\s+/).filter(Boolean).slice(0, 2);
+  return parts.map((part) => part[0]?.toUpperCase() || "").join("") || source[0].toUpperCase();
 }

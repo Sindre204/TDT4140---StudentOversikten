@@ -87,6 +87,15 @@ class EventRegistrationTests(APITestCase):
         self.assertEqual(response.data["registrations_count"], 1)
         self.assertEqual(response.data["participants"][0]["id"], self.user.id)
 
+    def test_public_can_view_event_participants(self):
+        Registration.objects.create(user=self.user, event=self.event)
+        url = f"/api/events/{self.event.id}/participants/"
+        response = self.client.get(url, format="json")
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["registrations_count"], 1)
+        self.assertEqual(response.data["participants"][0]["email"], self.user.email)
+
     def test_other_company_cannot_view_event_registrations(self):
         url = f"/api/events/{self.event.id}/registrations/?company_user_id={self.other_company_user.id}"
         response = self.client.get(url, format="json")

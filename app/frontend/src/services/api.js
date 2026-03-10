@@ -84,6 +84,10 @@ export async function fetchEventById(id) {
   return requestJson(`/events/${id}/`);
 }
 
+export async function fetchEventParticipants(eventId) {
+  return requestJson(`/events/${eventId}/participants/`);
+}
+
 export async function fetchAds() {
   return requestJson("/listing/");
 }
