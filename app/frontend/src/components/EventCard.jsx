@@ -27,7 +27,7 @@ export function EventCard({ event }) {
           {event.date} - {event.places}
         </div>
 
-        <p className="event-description">{event.description}</p>
+
       </div>
 
       <div className="event-right">
