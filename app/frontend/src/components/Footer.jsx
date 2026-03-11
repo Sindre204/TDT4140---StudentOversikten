@@ -1,12 +1,15 @@
 import "./Footer.css";
+import { useTranslation } from 'react-i18next';
 
 export default function Footer() {
+  const { t } = useTranslation();
+  
   return (
     <footer className="footer">
       <div className="footer-content">
         <div className="footer-brand">
           <div className="footer-title">StudentOversikten</div>
-          <p className="footer-sub">Gruppe 47</p>
+          <p className="footer-sub">{t("group")}</p> 
         </div>
 
         <div className="footer-info">
@@ -14,7 +17,7 @@ export default function Footer() {
             kontakt@studentoversikten.no 
           </a>
           <span className="footer-divider">|</span>
-          <span className="footer-text">+47 123 45 678</span>
+          <span className="footer-text">+47 123 45 678 </span>
         </div>
 
         <div className="footer-bottom">

@@ -1,8 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { CompanyCard } from "../components/CompanyCard";
 import { fetchCompanies } from "../services/api";
+import { useTranslation } from 'react-i18next';
 
 export function Companies() {
+  const { t, i18n } = useTranslation();
   const [companies, setCompanies] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOrder, setSortOrder] = useState("asc");
@@ -31,17 +33,19 @@ export function Companies() {
 
   return (
     <>
-      <h1 className="events-header">Selskaper</h1>
+      
+
+      <h1 className="events-header">{t("companiesTitle")}</h1>
 
       <p className="events-subtitle">
-        Utforsk alle firmaer vi samarbeider med
+        {t("exploreCompanies")}
       </p>
 
       <div className="events-controls">
         <input
           type="text"
-          aria-label="Søk"
-          placeholder="Søk etter selskaper"
+          aria-label={t("searchCompanies")}
+          placeholder={t("searchCompanies")}
           value={searchTerm}
           onChange={(event) => setSearchTerm(event.target.value)}
         />

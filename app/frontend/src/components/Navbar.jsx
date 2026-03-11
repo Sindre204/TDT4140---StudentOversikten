@@ -52,7 +52,7 @@ export function Navbar() {
                   {user.role === 'company' ? (
                     <Link to='/administration' className="btn-admin-nav">Admin</Link>
                   ) : (
-                    <a href="http://127.0.0.1:8000/admin/" className="btn-admin-nav">Django</a>
+                    <a href="http://127.0.0.1:8000/admin/" className="btn-admin-nav">Admin</a>
                   )}
                 </div>
               )}

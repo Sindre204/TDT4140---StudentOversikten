@@ -60,5 +60,10 @@
   "noImage": "Ingen bilde",
   "unknownCompany": "Ukjent selskap",
   "noTitle": "Ingen tittel",
-  "company": "Selskap"
+  "company": "Selskap",
+
+  "companiesTitle": "Selskaper",
+  "exploreCompanies": "Utforsk alle firmaer vi samarbeider med",
+  "searchCompanies": "Søk etter selskaper",
+  "group": "Gruppe 47"
 }

@@ -1,0 +1,133 @@
+.administration-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 60px 20px;
+  background-color: var(--bg-body);
+  transition: background-color 0.3s ease;
+}
+
+.administration-hero {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.administration-kicker {
+  color: var(--accent);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  letter-spacing: 0.1em;
+  margin-bottom: 10px;
+}
+
+.administration-hero h1 {
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 15px;
+  letter-spacing: -0.04em;
+}
+
+.administration-subtitle {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.administration-form {
+  background: var(--bg-card);
+  padding: 40px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--card-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  transition: all 0.3s ease;
+}
+
+.administration-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-main);
+}
+
+.administration-form input[type="text"],
+.administration-form input[type="file"],
+.administration-form select,
+.administration-form textarea {
+  padding: 14px 18px;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  font-size: 1rem;
+  background-color: var(--input-bg);
+  color: var(--text-main);
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+.administration-form textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.administration-form input:focus,
+.administration-form select:focus,
+.administration-form textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+.administration-form input[type="file"] {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.administration-form button[type="submit"] {
+  background-color: var(--accent);
+  color: white;
+  padding: 16px;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 10px;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+}
+
+.administration-form button[type="submit"]:hover:not(:disabled) {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+}
+
+.administration-form button[type="submit"]:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.administration-error {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  padding: 14px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+@media (max-width: 600px) {
+  .administration-hero h1 {
+    font-size: 2.5rem;
+  }
+  
+  .administration-form {
+    padding: 25px;
+  }
+}

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { createEvent, fetchEventById, updateEvent } from "../services/api";
-import "./Administration.css";
+import "./CreateListingAdmin.css";
 
 const EVENT_CATEGORIES = [
   "Sosialt",

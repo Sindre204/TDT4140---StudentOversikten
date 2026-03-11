@@ -69,18 +69,6 @@ export function CreateUser() {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="role">Jeg er en...</label>
-                        <select
-                            id="role"
-                            value={role}
-                            onChange={(e) => setRole(e.target.value)}
-                        >
-                            <option value="student">Student</option>
-                            <option value="company">Bedrift</option>
-                        </select>
-                    </div>
-
-                    <div className="form-group">
                         <label htmlFor="password">{t("password")}</label>
                         <input
                             type="password"

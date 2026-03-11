@@ -60,5 +60,10 @@
   "noImage": "Sem imagem",
   "unknownCompany": "Empresa desconhecida",
   "noTitle": "Sem título",
-  "company": "Empresa"
+  "company": "Empresa", 
+
+  "companiesTitle": "Empresas",
+  "exploreCompanies": "Explore todas as empresas com as quais colaboramos",
+  "searchCompanies": "Pesquisar empresas",
+  "group": "Grupo 47"
 }
