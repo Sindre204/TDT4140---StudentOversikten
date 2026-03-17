@@ -15,7 +15,6 @@ export function EventDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { t } = useTranslation();
-
   const { user } = useAuth();
   const canRegister = user?.role !== "company";
 
@@ -48,21 +47,21 @@ export function EventDetail() {
         } else {
           setIsRegistered(false);
         }
-      } catch (_err) {
-        setError("Something went wrong while fetching the event.");
+      } catch {
+        setError(t("fetchError"));
       } finally {
         setLoading(false);
       }
     }
 
     loadEvent();
-  }, [id, user?.id, canRegister]);
+  }, [canRegister, id, t, user?.id]);
 
   async function handleRegister() {
     setMessage("");
 
     if (!user?.id) {
-      setMessage("Du må være logget inn for å melde deg på.");
+      setMessage(t("mustBeLoggedInToRegister"));
       return;
     }
 
@@ -72,7 +71,7 @@ export function EventDetail() {
         setIsRegistered(false);
         setParticipants((current) => current.filter((participant) => participant.id !== user.id));
         setParticipantCount((current) => Math.max(0, current - 1));
-        setMessage("Du har forlatt arrangementet.");
+        setMessage(t("leftEvent"));
       } else {
         await registerForEvent(id, user.id);
         setIsRegistered(true);
@@ -91,10 +90,10 @@ export function EventDetail() {
           ];
         });
         setParticipantCount((current) => current + 1);
-        setMessage("Du er nå påmeldt.");
+        setMessage(t("registeredEvent"));
       }
-    } catch (_err) {
-      setMessage("Kunne ikke oppdatere påmelding akkurat nå.");
+    } catch {
+      setMessage(t("registrationUpdateFailed"));
     }
   }
 
@@ -110,11 +109,7 @@ export function EventDetail() {
 
   return (
     <section className="detail-page">
-      <button
-        type="button"
-        className="back-button"
-        onClick={() => navigate(-1)}
-      >
+      <button type="button" className="back-button" onClick={() => navigate(-1)}>
         {t("back")}
       </button>
 
@@ -124,7 +119,7 @@ export function EventDetail() {
         <h1>{event.title}</h1>
       </div>
 
-      <section className="detail-meta" aria-label="Event information">
+      <section className="detail-meta" aria-label={t("eventInformation")}>
         <article className="detail-meta-card">
           <p className="detail-meta-label">{t("category")}</p>
           <p className="detail-meta-value">{event.category || "-"}</p>
@@ -144,8 +139,10 @@ export function EventDetail() {
       </section>
 
       <section className="detail-content-section" aria-labelledby="description-heading">
-        <h2 id="description-heading" className="detail-section-title">Beskrivelse</h2>
-        <p className="detail-description">{event.description || "Ingen beskrivelse tilgjengelig."}</p>
+        <h2 id="description-heading" className="detail-section-title">
+          {t("description")}
+        </h2>
+        <p className="detail-description">{event.description || t("noDescriptionAvailable")}</p>
       </section>
 
       {canRegister ? (
@@ -161,14 +158,14 @@ export function EventDetail() {
       <section className="participants-section" aria-labelledby="participants-heading">
         <div className="participants-header">
           <div>
-            <p className="participants-kicker">Påmeldte</p>
-            <h2 id="participants-heading">Hvem kommer?</h2>
+            <p className="participants-kicker">{t("participants")}</p>
+            <h2 id="participants-heading">{t("whoIsComing")}</h2>
           </div>
           <div className="participants-count">{participantCount}</div>
         </div>
 
         {!participants.length ? (
-          <p className="participants-empty">Ingen er påmeldt enda.</p>
+          <p className="participants-empty">{t("noParticipantsYet")}</p>
         ) : (
           <ul className="participants-list">
             {participants.map((participant) => (
@@ -197,7 +194,6 @@ function getImageUrl(imagePath) {
   }
 
   const baseUrl = "http://127.0.0.1:8000";
-
   return imagePath.startsWith("/") ? `${baseUrl}${imagePath}` : `${baseUrl}/${imagePath}`;
 }
 

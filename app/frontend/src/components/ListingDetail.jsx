@@ -19,7 +19,7 @@ export function ListingDetail() {
         setLoading(true);
         const data = await fetchListingById(id);
         setListing(data);
-      } catch (_err) {
+      } catch {
         setError(t("fetchListingError"));
       } finally {
         setLoading(false);
@@ -27,7 +27,7 @@ export function ListingDetail() {
     }
 
     loadListing();
-  }, [id]);
+  }, [id, t]);
 
   if (loading) {
     return <p className="detail-status">{t("loading")}</p>;
@@ -49,7 +49,7 @@ export function ListingDetail() {
         <h1>{listing.title}</h1>
         <h2>{listing.company}</h2>
       </div>
-      <section className="detail-meta" aria-label="Listing information">
+      <section className="detail-meta" aria-label={t("listingInformation")}>
         <article className="detail-meta-card">
           <p className="detail-meta-label">{t("employment")}</p>
           <p className="detail-meta-value">{listing.employment_type || "-"}</p>
@@ -60,8 +60,10 @@ export function ListingDetail() {
         </article>
       </section>
       <section className="detail-content-section" aria-labelledby="listing-description-heading">
-        <h2 id="listing-description-heading" className="detail-section-title">Beskrivelse</h2>
-        <p className="detail-description">{listing.description || "Ingen beskrivelse tilgjengelig."}</p>
+        <h2 id="listing-description-heading" className="detail-section-title">
+          {t("description")}
+        </h2>
+        <p className="detail-description">{listing.description || t("noDescriptionAvailable")}</p>
       </section>
     </section>
   );

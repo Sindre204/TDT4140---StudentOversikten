@@ -1,27 +1,29 @@
 import { useEffect, useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "../context/AuthContext";
 import { createListing, fetchListingById, updateListing } from "../services/api";
 import "./Administration.css";
 
 const EMPLOYMENT_TYPES = [
-  "Full-time",
-  "Part-time",
-  "Internship",
-  "Summer job",
+  { value: "Full-time", label: "employmentFullTime" },
+  { value: "Part-time", label: "employmentPartTime" },
+  { value: "Internship", label: "employmentInternship" },
+  { value: "Summer job", label: "employmentSummerJob" },
 ];
 
 const INITIAL_FORM = {
   title: "",
   description: "",
   company: "",
-  employment_type: EMPLOYMENT_TYPES[0],
+  employment_type: EMPLOYMENT_TYPES[0].value,
   city: "",
   image: null,
 };
 
 export function CreateListingAdmin() {
   const { user } = useAuth();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { id } = useParams();
   const isEditMode = Boolean(id);
@@ -62,7 +64,7 @@ export function CreateListingAdmin() {
           title: existingListing.title ?? "",
           description: existingListing.description ?? "",
           company: existingListing.company ?? "",
-          employment_type: existingListing.employment_type ?? EMPLOYMENT_TYPES[0],
+          employment_type: existingListing.employment_type ?? EMPLOYMENT_TYPES[0].value,
           city: existingListing.city ?? "",
           image: null,
         });
@@ -129,97 +131,95 @@ export function CreateListingAdmin() {
   return (
     <section className="administration-page">
       <div className="administration-hero">
-        <p className="administration-kicker">Administrasjon</p>
-        <h1>{isEditMode ? "Rediger jobbannonse" : "Opprett jobbannonse"}</h1>
+        <p className="administration-kicker">{t("administration")}</p>
+        <h1>{isEditMode ? t("editListing") : t("createListingTitle")}</h1>
         <p className="administration-subtitle">
-          {isEditMode
-            ? "Oppdater jobbannonsen og lagre endringene direkte i backend."
-            : "Legg inn en jobbannonse som publiseres direkte i backend."}
+          {isEditMode ? t("editListingSubtitle") : t("createListingSubtitle")}
         </p>
       </div>
 
-      {isLoading ? <p>Laster jobbannonse...</p> : null}
+      {isLoading ? <p>{t("loadingListing")}</p> : null}
 
       {!isLoading ? (
-      <form className="administration-form" onSubmit={handleSubmit}>
-        <label>
-          Tittel
-          <input
-            name="title"
-            type="text"
-            value={formData.title}
-            onChange={handleChange}
-            required
-          />
-        </label>
+        <form className="administration-form" onSubmit={handleSubmit}>
+          <label>
+            {t("title")}
+            <input
+              name="title"
+              type="text"
+              value={formData.title}
+              onChange={handleChange}
+              required
+            />
+          </label>
 
-        <label>
-          Firma
-          <input
-            name="company"
-            type="text"
-            value={formData.company}
-            onChange={handleChange}
-            required
-          />
-        </label>
+          <label>
+            {t("companyName")}
+            <input
+              name="company"
+              type="text"
+              value={formData.company}
+              onChange={handleChange}
+              required
+            />
+          </label>
 
-        <label>
-          Ansettelsesform
-          <select
-            name="employment_type"
-            value={formData.employment_type}
-            onChange={handleChange}
-            required
-          >
-            {EMPLOYMENT_TYPES.map((employmentType) => (
-              <option key={employmentType} value={employmentType}>
-                {employmentType}
-              </option>
-            ))}
-          </select>
-        </label>
+          <label>
+            {t("employmentType")}
+            <select
+              name="employment_type"
+              value={formData.employment_type}
+              onChange={handleChange}
+              required
+            >
+              {EMPLOYMENT_TYPES.map((employmentType) => (
+                <option key={employmentType.value} value={employmentType.value}>
+                  {t(employmentType.label)}
+                </option>
+              ))}
+            </select>
+          </label>
 
-        <label>
-          By
-          <input
-            name="city"
-            type="text"
-            value={formData.city}
-            onChange={handleChange}
-            required
-          />
-        </label>
+          <label>
+            {t("city")}
+            <input
+              name="city"
+              type="text"
+              value={formData.city}
+              onChange={handleChange}
+              required
+            />
+          </label>
 
-        <label>
-          Beskrivelse
-          <textarea
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            rows="5"
-            required
-          />
-        </label>
+          <label>
+            {t("description")}
+            <textarea
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              rows="5"
+              required
+            />
+          </label>
 
-        <label>
-          Bilde
-          <input
-            name="image"
-            type="file"
-            accept="image/*"
-            onChange={handleFileChange}
-          />
-        </label>
+          <label>
+            {t("image")}
+            <input
+              name="image"
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+            />
+          </label>
 
-        {error ? <p className="administration-error">{error}</p> : null}
+          {error ? <p className="administration-error">{error}</p> : null}
 
-        <button type="submit" disabled={isSubmitting}>
-          {isSubmitting
-            ? (isEditMode ? "Lagrer..." : "Oppretter...")
-            : (isEditMode ? "Lagre endringer" : "Opprett jobbannonse")}
-        </button>
-      </form>
+          <button type="submit" disabled={isSubmitting}>
+            {isSubmitting
+              ? (isEditMode ? t("saving") : t("creating"))
+              : (isEditMode ? t("saveChanges") : t("createListing"))}
+          </button>
+        </form>
       ) : null}
     </section>
   );

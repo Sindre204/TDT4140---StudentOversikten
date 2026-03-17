@@ -1,8 +1,10 @@
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import "./EventCard.css";
 
 export function EventCard({ event }) {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const imageUrl = getEventImageUrl(event.image);
 
   return (
@@ -14,14 +16,14 @@ export function EventCard({ event }) {
         </div>
 
         {event.host_company ? (
-          <p className="event-host">Hostes av {event.host_company}</p>
+          <p className="event-host">{t("hostedBy", { company: event.host_company })}</p>
         ) : null}
-        
+
         <h2 className="event-title">{event.title}</h2>
-        
+
         <div className="event-meta">
-          <span className="meta-item"> {event.places}</span>
-          <span className="meta-item"> {event.capacity} plasser</span>
+          <span className="meta-item">{event.places}</span>
+          <span className="meta-item">{t("placesLabel", { count: event.capacity })}</span>
         </div>
       </div>
 

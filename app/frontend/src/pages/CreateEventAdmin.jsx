@@ -1,23 +1,24 @@
 import { useEffect, useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "../context/AuthContext";
 import { createEvent, fetchEventById, updateEvent } from "../services/api";
 import "./CreateListingAdmin.css";
 
 const EVENT_CATEGORIES = [
-  "Sosialt",
-  "Karriere",
-  "Workshop",
-  "Sport",
-  "Faglig",
-  "Fest",
-  "Nettverksbygging",
-  "Annet",
+  { value: "Sosialt", label: "eventCategorySocial" },
+  { value: "Karriere", label: "eventCategoryCareer" },
+  { value: "Workshop", label: "eventCategoryWorkshop" },
+  { value: "Sport", label: "eventCategorySport" },
+  { value: "Faglig", label: "eventCategoryAcademic" },
+  { value: "Fest", label: "eventCategoryParty" },
+  { value: "Nettverksbygging", label: "eventCategoryNetworking" },
+  { value: "Annet", label: "eventCategoryOther" },
 ];
 
 const INITIAL_FORM = {
   title: "",
-  category: EVENT_CATEGORIES[0],
+  category: EVENT_CATEGORIES[0].value,
   date: "",
   description: "",
   places: "",
@@ -27,6 +28,7 @@ const INITIAL_FORM = {
 
 export function CreateEventAdmin() {
   const { user } = useAuth();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { id } = useParams();
   const isEditMode = Boolean(id);
@@ -65,7 +67,7 @@ export function CreateEventAdmin() {
 
         setFormData({
           title: existingEvent.title ?? "",
-          category: existingEvent.category ?? EVENT_CATEGORIES[0],
+          category: existingEvent.category ?? EVENT_CATEGORIES[0].value,
           date: existingEvent.date ?? "",
           description: existingEvent.description ?? "",
           places: existingEvent.places ?? "",
@@ -135,109 +137,107 @@ export function CreateEventAdmin() {
   return (
     <section className="administration-page">
       <div className="administration-hero">
-        <p className="administration-kicker">Administrasjon</p>
-        <h1>{isEditMode ? "Rediger arrangement" : "Opprett arrangement"}</h1>
+        <p className="administration-kicker">{t("administration")}</p>
+        <h1>{isEditMode ? t("editEvent") : t("createEventTitle")}</h1>
         <p className="administration-subtitle">
-          {isEditMode
-            ? "Oppdater arrangementet med de samme feltene som i Django."
-            : "Fyll ut de samme feltene som du ville gjort i Django."}
+          {isEditMode ? t("editEventSubtitle") : t("createEventSubtitle")}
         </p>
       </div>
 
-      {isLoading ? <p>Laster arrangement...</p> : null}
+      {isLoading ? <p>{t("loadingEvent")}</p> : null}
 
       {!isLoading ? (
-      <form className="administration-form" onSubmit={handleSubmit}>
-        <label>
-          Tittel
-          <input
-            name="title"
-            type="text"
-            value={formData.title}
-            onChange={handleChange}
-            required
-          />
-        </label>
+        <form className="administration-form" onSubmit={handleSubmit}>
+          <label>
+            {t("title")}
+            <input
+              name="title"
+              type="text"
+              value={formData.title}
+              onChange={handleChange}
+              required
+            />
+          </label>
 
-        <label>
-          Kategori
-          <select
-            name="category"
-            value={formData.category}
-            onChange={handleChange}
-            required
-          >
-            {EVENT_CATEGORIES.map((category) => (
-              <option key={category} value={category}>
-                {category}
-              </option>
-            ))}
-          </select>
-        </label>
+          <label>
+            {t("eventCategory")}
+            <select
+              name="category"
+              value={formData.category}
+              onChange={handleChange}
+              required
+            >
+              {EVENT_CATEGORIES.map((category) => (
+                <option key={category.value} value={category.value}>
+                  {t(category.label)}
+                </option>
+              ))}
+            </select>
+          </label>
 
-        <label>
-          Dato
-          <input
-            name="date"
-            type="date"
-            value={formData.date}
-            onChange={handleChange}
-            required
-          />
-        </label>
+          <label>
+            {t("eventDate")}
+            <input
+              name="date"
+              type="date"
+              value={formData.date}
+              onChange={handleChange}
+              required
+            />
+          </label>
 
-        <label>
-          Beskrivelse
-          <textarea
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            rows="5"
-            required
-          />
-        </label>
+          <label>
+            {t("description")}
+            <textarea
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              rows="5"
+              required
+            />
+          </label>
 
-        <label>
-          Sted
-          <input
-            name="places"
-            type="text"
-            value={formData.places}
-            onChange={handleChange}
-            required
-          />
-        </label>
+          <label>
+            {t("eventPlace")}
+            <input
+              name="places"
+              type="text"
+              value={formData.places}
+              onChange={handleChange}
+              required
+            />
+          </label>
 
-        <label>
-          Kapasitet
-          <input
-            name="capacity"
-            type="number"
-            min="1"
-            value={formData.capacity}
-            onChange={handleChange}
-            required
-          />
-        </label>
+          <label>
+            {t("eventCapacity")}
+            <input
+              name="capacity"
+              type="number"
+              min="1"
+              value={formData.capacity}
+              onChange={handleChange}
+              required
+            />
+          </label>
 
-        <label>
-          Bilde
-          <input
-            name="image"
-            type="file"
-            accept="image/*"
-            onChange={handleFileChange}
-          />
-        </label>
+          <label>
+            {t("image")}
+            <input
+              name="image"
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+            />
+          </label>
 
-        {error ? <p className="administration-error">{error}</p> : null}
+          {error ? <p className="administration-error">{error}</p> : null}
 
-        <button type="submit" disabled={isSubmitting}>
-          {isSubmitting
-            ? (isEditMode ? "Lagrer..." : "Oppretter...")
-            : (isEditMode ? "Lagre endringer" : "Opprett arrangement")}
-        </button>
-      </form>
+          <button type="submit" disabled={isSubmitting}>
+            {isSubmitting
+              ? (isEditMode ? t("saving") : t("creating"))
+              : (isEditMode ? t("saveChanges") : t("createEvent"))}
+          </button>
+        </form>
       ) : null}
     </section>
   );
