@@ -4,6 +4,8 @@ import { vi, describe, test, expect, beforeEach } from "vitest";
 import { Companies } from "../src/pages/Companies";
 import { fetchCompanies } from "../src/services/api";
 
+// Parts of the tests were generated with Google Gemini by Henrik C Kran
+
 vi.mock("../src/services/api");
 
 const mockCompanies = [

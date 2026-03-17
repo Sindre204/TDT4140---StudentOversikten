@@ -98,7 +98,6 @@
   background-color: var(--card-border);
 }
 
-/* Responsivitet for mobil */
 @media (max-width: 640px) {
   .home h1 {
     font-size: 2.5rem;

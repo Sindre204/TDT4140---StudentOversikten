@@ -71,9 +71,9 @@
   width: 120px;
   height: 70px;
   border-radius: 14px;
-  object-fit: contain; /* Endret til contain for logoer */
+  object-fit: contain; 
   background: var(--badge-bg);
-  padding: 8px; /* Gir logoer litt pusterom */
+  padding: 8px; 
   flex-shrink: 0;
 }
 
@@ -87,7 +87,6 @@
   text-transform: uppercase;
 }
 
-/* Responsiv */
 @media (max-width: 500px) {
   .company-card {
     padding: 16px;

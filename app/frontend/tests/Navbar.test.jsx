@@ -6,7 +6,7 @@ import { vi, describe, test, expect, beforeEach } from "vitest";
 
 vi.mock("../src/context/AuthContext");
 
-// Deler av testene er generert med Google Gemini
+// Parts of the tests were generated with Google Gemini by Henrik C Kran
 
 describe("Navbar Component", () => {
     

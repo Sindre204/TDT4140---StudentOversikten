@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ListingCard } from "../components/LisitingCard"; // Beholder filnavnet ditt
+import { ListingCard } from "../components/LisitingCard";
 import { fetchAds } from "../services/api";
 
 export function Listings() {

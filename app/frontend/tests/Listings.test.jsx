@@ -4,7 +4,7 @@ import { Listings } from "../src/pages/Listings";
 import { fetchAds } from "../src/services/api";
 import { vi, describe, test, expect, beforeEach } from 'vitest';
 
-// Deler av testene er generert med Google Gemini
+// Parts of the tests were generated with Google Gemini by Henrik C Kran
 
 vi.mock("../src/services/api");
 

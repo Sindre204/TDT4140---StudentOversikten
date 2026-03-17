@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { vi, describe, test, expect, beforeEach } from "vitest";
 import { MemoryRouter } from "react-router-dom";
 
-// Deler av testene er generert med Google Gemini
+// Parts of the tests were generated with Google Gemini by Henrik C Kran
 
 vi.mock("../src/context/AuthContext");
 vi.mock("react-router-dom", async () => {
