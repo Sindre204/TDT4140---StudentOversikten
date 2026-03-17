@@ -1,16 +1,14 @@
 import { MemoryRouter } from "react-router-dom";
-import { render, screen, waitFor, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
+import { vi, describe, test, expect, beforeEach } from "vitest";
 import { Listings } from "../src/pages/Listings";
 import { fetchAds } from "../src/services/api";
-import { vi, describe, test, expect, beforeEach } from 'vitest';
-
-// Deler av testene er generert med Google Gemini
 
 vi.mock("../src/services/api");
 
 const mockData = [
-  { id: 1, title: "Frontend Utvikler", location: "Oslo", applicationDeadline: "2024-12-01" },
-  { id: 2, title: "Backend Utvikler", location: "Trondheim", applicationDeadline: "2024-11-01" },
+  { id: 1, title: "Frontend Utvikler", city: "Oslo", applicationDeadline: "2024-12-01" },
+  { id: 2, title: "Backend Utvikler", city: "Trondheim", applicationDeadline: "2024-11-01" },
 ];
 
 describe("Listings Component", () => {
@@ -25,47 +23,42 @@ describe("Listings Component", () => {
       </MemoryRouter>
     );
 
-    expect(screen.getByRole("heading", { name: /Jobbannonser/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /jobbannonser/i })).toBeInTheDocument();
 
-    await waitFor(() => {
-      expect(screen.getByText("Frontend Utvikler")).toBeInTheDocument();
-      expect(screen.getByText("Backend Utvikler")).toBeInTheDocument();
+    expect(await screen.findByText("Frontend Utvikler")).toBeInTheDocument();
+    expect(screen.getByText("Backend Utvikler")).toBeInTheDocument();
+  });
+
+  test("filtrerer annonser basert på søk", async () => {
+    render(
+      <MemoryRouter>
+        <Listings />
+      </MemoryRouter>
+    );
+
+    await screen.findByText("Frontend Utvikler");
+
+    fireEvent.change(screen.getByPlaceholderText(/søk etter jobbannonser/i), {
+      target: { value: "Frontend" },
     });
-  });
 
-  test("verifiserer at søkefeltet oppdateres, men at alle annonser forblir synlige", async () => {
-    render(
-      <MemoryRouter>
-        <Listings />
-      </MemoryRouter>
-    );
-    
-    await waitFor(() => expect(screen.getByText("Frontend Utvikler")).toBeInTheDocument());
-
-    const searchInput = screen.getByPlaceholderText(/Søk etter jobbannonser/i);
-    
-    
-    fireEvent.change(searchInput, { target: { value: "Frontend" } });
-
-    
     expect(screen.getByText("Frontend Utvikler")).toBeInTheDocument();
-    expect(screen.getByText("Backend Utvikler")).toBeInTheDocument(); 
+    expect(screen.queryByText("Backend Utvikler")).not.toBeInTheDocument();
   });
 
-  test("verifiserer at lokasjonsfilter ikke skjuler elementer", async () => {
+  test("filtrerer annonser basert på by", async () => {
     render(
       <MemoryRouter>
         <Listings />
       </MemoryRouter>
     );
-    
-    await waitFor(() => expect(screen.getByText("Frontend Utvikler")).toBeInTheDocument());
+
+    await screen.findByText("Frontend Utvikler");
 
     const selects = screen.getAllByRole("combobox");
     fireEvent.change(selects[0], { target: { value: "Oslo" } });
 
-    
     expect(screen.getByText("Frontend Utvikler")).toBeInTheDocument();
-    expect(screen.getByText("Backend Utvikler")).toBeInTheDocument(); 
+    expect(screen.queryByText("Backend Utvikler")).not.toBeInTheDocument();
   });
 });
