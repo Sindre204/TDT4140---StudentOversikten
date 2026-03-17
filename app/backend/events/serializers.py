@@ -1,7 +1,8 @@
 from rest_framework import serializers
 
+from django.db.models import Sum
 from django.contrib.auth.models import Group, User
-from .models import Event, Listing, Company
+from .models import Event, Listing, Company, Registration
 
 
 
@@ -69,10 +70,11 @@ class CompanySerializer(serializers.ModelSerializer):
 class UserPublicSerializer(serializers.ModelSerializer):
     fullName = serializers.SerializerMethodField()
     role = serializers.SerializerMethodField()
+    totalDots = serializers.SerializerMethodField()
 
     class Meta:
         model = User
-        fields = ['id', 'email', 'fullName', 'role']
+        fields = ['id', 'email', 'fullName', 'role', 'totalDots']
 
     def get_fullName(self, obj):
         full_name = obj.get_full_name().strip()
@@ -86,6 +88,9 @@ class UserPublicSerializer(serializers.ModelSerializer):
         if obj.groups.filter(name=COMPANY_GROUP_NAME).exists():
             return 'company'
         return 'student'
+
+    def get_totalDots(self, obj):
+        return Registration.objects.filter(user=obj).aggregate(total=Sum('dots'))['total'] or 0
 
 
 class RegisterSerializer(serializers.Serializer):

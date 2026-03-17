@@ -31,9 +31,10 @@ export function CreateListingAdmin() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(isEditMode);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [ownerId, setOwnerId] = useState(null);
 
   useEffect(() => {
-    if (!user || user.role !== "company") {
+    if (!user || (user.role !== "company" && user.role !== "admin")) {
       return undefined;
     }
 
@@ -55,10 +56,11 @@ export function CreateListingAdmin() {
           return;
         }
 
-        if (existingListing.created_by !== user.id) {
+        if (user.role === "company" && existingListing.created_by !== user.id) {
           navigate("/administration", { replace: true });
           return;
         }
+        setOwnerId(existingListing.created_by);
 
         setFormData({
           title: existingListing.title ?? "",
@@ -86,7 +88,7 @@ export function CreateListingAdmin() {
     };
   }, [id, isEditMode, navigate, user]);
 
-  if (!user || user.role !== "company") {
+  if (!user || (user.role !== "company" && user.role !== "admin")) {
     return <Navigate to="/LogIn" replace />;
   }
 
@@ -113,14 +115,14 @@ export function CreateListingAdmin() {
     try {
       const payload = {
         ...formData,
-        created_by: user.id,
+        created_by: isEditMode ? (ownerId ?? user.id) : user.id,
       };
 
       const savedListing = isEditMode
         ? await updateListing(id, payload)
         : await createListing(payload);
 
-      navigate(`/listings/${savedListing.id}`);
+      navigate(user.role === "admin" ? "/admin-work/listings" : `/listings/${savedListing.id}`);
     } catch (submitError) {
       setError(submitError.message);
     } finally {

@@ -24,6 +24,11 @@
   "email": "E-post",
   "role": "Rolle",
   "logOut": "Logg ut",
+<<<<<<< Updated upstream
+=======
+  "dots": "Prikker",
+
+>>>>>>> Stashed changes
   "createUser": "Lag ny bruker",
   "createUserSubtitle": "Opprett en konto for å komme i gang",
   "fullNamePlaceholder": "Ditt fulle navn",

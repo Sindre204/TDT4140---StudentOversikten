@@ -1,5 +1,7 @@
 import random
+from pathlib import Path
 from django.core.management.base import BaseCommand
+from django.core.files import File
 from django.contrib.auth.models import Group, User
 from django.utils.text import slugify
 from faker import Faker
@@ -19,6 +21,49 @@ class Command(BaseCommand):
         token = slugify(company_name).replace('-', '')
         return token or 'company'
 
+    @staticmethod
+    def _student_credentials(full_name):
+        first_name, last_name = full_name.split(" ", 1)
+        first_lower = first_name.strip().lower()
+        last_lower = last_name.strip().lower()
+        email = f"{first_lower}@{last_lower}.no"
+        password = f"test{first_lower}123"
+        return first_name.strip(), last_name.strip(), email, password
+
+    @staticmethod
+    def _create_or_update_student(full_name):
+        first_name, last_name, email, password = Command._student_credentials(full_name)
+
+        student, created = User.objects.get_or_create(
+            username=email,
+            defaults={
+                "email": email,
+                "first_name": first_name,
+                "last_name": last_name,
+                "is_active": True,
+            },
+        )
+
+        updates = []
+        if not created:
+            if student.email != email:
+                student.email = email
+                updates.append("email")
+            if student.first_name != first_name:
+                student.first_name = first_name
+                updates.append("first_name")
+            if student.last_name != last_name:
+                student.last_name = last_name
+                updates.append("last_name")
+            if not student.is_active:
+                student.is_active = True
+                updates.append("is_active")
+
+        student.set_password(password)
+        updates.append("password")
+        student.save(update_fields=updates)
+        return student
+
     def handle(self, *args, **kwargs):
         # --- SEEDING ---
         # Ved å sette dette tallet, vil random.choice og fake.name() 
@@ -37,6 +82,15 @@ class Command(BaseCommand):
         cities = ['Trondheim', 'Oslo', 'Bergen', 'Stavanger', 'Tromsø' ]
         job_types = ['Fulltid', 'Deltid', 'Internship', 'Sommerjobb']
         company_names = ['BDO', 'Equinor', 'Itera', 'Sopra Steria', 'Netlight', 'Kongsberg']
+        listing_logo_by_company = {
+            "BDO": "bdo.png",
+            "Equinor": "equinor.png",
+            "Itera": "Itera.png",
+            "Sopra Steria": "sopra_steria.png",
+            "Netlight": "netlight.png",
+            "Kongsberg": "kongsberg.png",
+        }
+        listings_logo_dir = Path(__file__).resolve().parents[4] / "frontend" / "src" / "assets" / "listings"
         company_group, _ = Group.objects.get_or_create(name='company')
 
         # 2. Generer firmaer
@@ -103,7 +157,7 @@ class Command(BaseCommand):
         self.stdout.write("Genererer 20 jobbannonser...")
         for _ in range(20):
             company, company_user = random.choice(companies_with_users)
-            Listing.objects.create(
+            listing = Listing.objects.create(
                 title=fake.job(),
                 company=company.name,
                 description=fake.text(max_nb_chars=1000),
@@ -111,9 +165,39 @@ class Command(BaseCommand):
                 city=random.choice(cities),
                 created_by=company_user
             )
+            logo_filename = listing_logo_by_company.get(company.name)
+            if logo_filename:
+                logo_path = listings_logo_dir / logo_filename
+                if logo_path.exists():
+                    with open(logo_path, "rb") as logo_file:
+                        listing.image.save(logo_filename, File(logo_file), save=True)
+                else:
+                    self.stdout.write(self.style.WARNING(
+                        f"Fant ikke logo for {company.name}: {logo_path}"
+                    ))
+
+        # 5. Generer teststudenter
+        self.stdout.write("Genererer 10 studenter...")
+        fixed_student_names = [
+            "Sindre Navelsaker",
+            "Amohan Kannan",
+            "Henrik Kran",
+            "Maria Fløstrand",
+            "Vilde Tveiten",
+        ]
+        random_student_names = []
+        while len(random_student_names) < 5:
+            random_name = f"{fake.first_name()} {fake.last_name()}"
+            if random_name in fixed_student_names or random_name in random_student_names:
+                continue
+            random_student_names.append(random_name)
+
+        all_student_names = fixed_student_names + random_student_names
+        created_students = [self._create_or_update_student(full_name) for full_name in all_student_names]
 
         self.stdout.write(self.style.SUCCESS(
             f'Ferdig! Generert {Company.objects.count()} firmaer, '
-            f'{Event.objects.count()} events og {Listing.objects.count()} annonser. '
+            f'{Event.objects.count()} events, {Listing.objects.count()} annonser '
+            f'og {len(created_students)} studenter. '
             f'Dataene er identiske med forrige kjøring pga. SEED {SEED}.'
         ))

@@ -36,9 +36,10 @@ export function CreateEventAdmin() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(isEditMode);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [ownerId, setOwnerId] = useState(null);
 
   useEffect(() => {
-    if (!user || user.role !== "company") {
+    if (!user || (user.role !== "company" && user.role !== "admin")) {
       return undefined;
     }
 
@@ -60,10 +61,11 @@ export function CreateEventAdmin() {
           return;
         }
 
-        if (existingEvent.created_by !== user.id) {
+        if (user.role === "company" && existingEvent.created_by !== user.id) {
           navigate("/administration", { replace: true });
           return;
         }
+        setOwnerId(existingEvent.created_by);
 
         setFormData({
           title: existingEvent.title ?? "",
@@ -92,7 +94,7 @@ export function CreateEventAdmin() {
     };
   }, [id, isEditMode, navigate, user]);
 
-  if (!user || user.role !== "company") {
+  if (!user || (user.role !== "company" && user.role !== "admin")) {
     return <Navigate to="/LogIn" replace />;
   }
 
@@ -119,14 +121,14 @@ export function CreateEventAdmin() {
     try {
       const payload = {
         ...formData,
-        created_by: user.id,
+        created_by: isEditMode ? (ownerId ?? user.id) : user.id,
       };
 
       const savedEvent = isEditMode
         ? await updateEvent(id, payload)
         : await createEvent(payload);
 
-      navigate(`/events/${savedEvent.id}`);
+      navigate(user.role === "admin" ? "/admin-work/events" : `/events/${savedEvent.id}`);
     } catch (submitError) {
       setError(submitError.message);
     } finally {

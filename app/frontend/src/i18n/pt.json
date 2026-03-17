@@ -24,6 +24,11 @@
   "email": "E-mail",
   "role": "Função",
   "logOut": "Sair",
+<<<<<<< Updated upstream
+=======
+  "dots": "Pontos",
+
+>>>>>>> Stashed changes
   "createUser": "Criar novo utilizador",
   "createUserSubtitle": "Crie uma conta para começar",
   "fullNamePlaceholder": "O seu nome completo",

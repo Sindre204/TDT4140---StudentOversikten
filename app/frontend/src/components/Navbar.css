@@ -85,6 +85,7 @@
   font-weight: 600;
   font-size: 0.9rem;
   transition: all 0.2s;
+  white-space: nowrap;
 }
 
 .btn-admin-nav:hover {

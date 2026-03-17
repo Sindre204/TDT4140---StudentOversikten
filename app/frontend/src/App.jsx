@@ -15,6 +15,10 @@ import { CompanyDetail } from './components/CompanyDetail';
 import { Administration } from './pages/Administration';
 import { CreateEventAdmin } from './pages/CreateEventAdmin';
 import { CreateListingAdmin } from './pages/CreateListingAdmin';
+import { AdminWork } from './pages/AdminWork';
+import { AdminUsersOverview } from './pages/AdminUsersOverview';
+import { AdminEventsOverview } from './pages/AdminEventsOverview';
+import { AdminListingsOverview } from './pages/AdminListingsOverview';
 
 
 import { Home } from './pages/home';
@@ -46,6 +50,10 @@ function App() {
             <Route path='/administration/events/:id/edit' element={<CreateEventAdmin />} />
             <Route path='/administration/ads/new' element={<CreateListingAdmin />} />
             <Route path='/administration/ads/:id/edit' element={<CreateListingAdmin />} />
+            <Route path='/admin-work' element={<AdminWork />} />
+            <Route path='/admin-work/users' element={<AdminUsersOverview />} />
+            <Route path='/admin-work/events' element={<AdminEventsOverview />} />
+            <Route path='/admin-work/listings' element={<AdminListingsOverview />} />
 
           </Route>
 

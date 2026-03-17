@@ -86,6 +86,7 @@ export function EventDetail() {
               id: user.id,
               fullName: user.fullName || user.email,
               email: user.email,
+              dots: 0,
             },
           ];
         });

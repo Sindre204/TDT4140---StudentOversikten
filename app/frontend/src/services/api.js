@@ -151,3 +151,42 @@ export async function fetchEventRegistrationsForCompany(eventId, companyUserId) 
   return requestJson(query);
 }
 
+<<<<<<< Updated upstream
+=======
+export async function updateEventRegistrationDots(eventId, studentUserId, companyUserId, dots) {
+  const response = await fetch(`${BASE_URL}/events/${eventId}/registrations/${studentUserId}/dots/`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      company_user_id: companyUserId,
+      dots,
+    }),
+  });
+  return parseResponse(response);
+}
+
+export async function fetchUserProfile(userId) {
+  return requestJson(`/auth/users/${userId}/`);
+}
+
+export async function fetchAdminUsersOverview(adminUserId) {
+  return requestJson(`/admin/users/?admin_user_id=${adminUserId}`);
+}
+
+export async function updateDotsFromAdminUsersOverview(adminUserId, studentUserId, eventId, dots) {
+  const response = await fetch(`${BASE_URL}/admin/users/${studentUserId}/events/${eventId}/dots/`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      admin_user_id: adminUserId,
+      dots,
+    }),
+  });
+  return parseResponse(response);
+}
+// End
+>>>>>>> Stashed changes

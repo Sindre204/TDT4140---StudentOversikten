@@ -6,6 +6,7 @@ import {
   fetchAdsByCreator,
   fetchEventRegistrationsForCompany,
   fetchEventsByCreator,
+  updateEventRegistrationDots,
 } from "../services/api";
 import "./Administration.css";
 
@@ -19,6 +20,10 @@ export function Administration() {
   const [eventRegistrations, setEventRegistrations] = useState({});
   const [eventRegistrationLoading, setEventRegistrationLoading] = useState({});
   const [eventRegistrationError, setEventRegistrationError] = useState({});
+  const [editingDots, setEditingDots] = useState({});
+  const [draftDots, setDraftDots] = useState({});
+  const [saveDotsLoading, setSaveDotsLoading] = useState({});
+  const [saveDotsError, setSaveDotsError] = useState({});
 
   useEffect(() => {
     if (!user || user.role !== "company") return;
@@ -67,6 +72,52 @@ export function Administration() {
       setEventRegistrationError((current) => ({ ...current, [eventId]: loadError.message }));
     } finally {
       setEventRegistrationLoading((current) => ({ ...current, [eventId]: false }));
+    }
+  };
+
+  const buildEditKey = (eventId, participantId) => `${eventId}-${participantId}`;
+
+  const handleStartEditDots = (eventId, participant) => {
+    const key = buildEditKey(eventId, participant.id);
+    setEditingDots((current) => ({ ...current, [key]: true }));
+    setDraftDots((current) => ({ ...current, [key]: participant.dots ?? 0 }));
+    setSaveDotsError((current) => ({ ...current, [key]: "" }));
+  };
+
+  const handleCancelEditDots = (eventId, participantId) => {
+    const key = buildEditKey(eventId, participantId);
+    setEditingDots((current) => ({ ...current, [key]: false }));
+    setSaveDotsError((current) => ({ ...current, [key]: "" }));
+  };
+
+  const handleSaveDots = async (eventId, participantId) => {
+    const key = buildEditKey(eventId, participantId);
+    try {
+      setSaveDotsLoading((current) => ({ ...current, [key]: true }));
+      setSaveDotsError((current) => ({ ...current, [key]: "" }));
+      const dotsToSave = Number(draftDots[key] ?? 0);
+      const updatedParticipant = await updateEventRegistrationDots(eventId, participantId, user.id, dotsToSave);
+
+      setEventRegistrations((current) => {
+        const registrationData = current[eventId];
+        if (!registrationData) return current;
+        return {
+          ...current,
+          [eventId]: {
+            ...registrationData,
+            participants: registrationData.participants.map((participant) =>
+              participant.id === participantId
+                ? { ...participant, dots: updatedParticipant.dots }
+                : participant
+            ),
+          },
+        };
+      });
+      setEditingDots((current) => ({ ...current, [key]: false }));
+    } catch (saveError) {
+      setSaveDotsError((current) => ({ ...current, [key]: saveError.message || "Kunne ikke lagre dots." }));
+    } finally {
+      setSaveDotsLoading((current) => ({ ...current, [key]: false }));
     }
   };
 
@@ -124,11 +175,76 @@ export function Administration() {
                     <p>{eventRegistrationError[event.id]}</p>
                   ) : (
                     <ul>
+<<<<<<< Updated upstream
                       {eventRegistrations[event.id]?.participants.map((participant) => (
                         <li key={participant.id}>
                           {participant.fullName} ({participant.email})
                         </li>
                       ))}
+=======
+                      {eventRegistrations[event.id]?.participants.map((p) => {
+                        const key = buildEditKey(event.id, p.id);
+                        const isEditing = Boolean(editingDots[key]);
+                        const isSaving = Boolean(saveDotsLoading[key]);
+                        const participantDots = p.dots ?? 0;
+                        return (
+                          <li key={p.id} className="admin-participant-row">
+                            <div>
+                              <span>{p.fullName} ({p.email})</span>
+                              <span className="admin-dots-label">Dots: {participantDots}</span>
+                            </div>
+                            <div className="admin-dots-actions">
+                              {isEditing ? (
+                                <>
+                                  <select
+                                    aria-label={`Velg dots for ${p.fullName}`}
+                                    value={draftDots[key] ?? participantDots}
+                                    onChange={(eventObj) =>
+                                      setDraftDots((current) => ({
+                                        ...current,
+                                        [key]: Number(eventObj.target.value),
+                                      }))
+                                    }
+                                  >
+                                    <option value={0}>0</option>
+                                    <option value={1}>1</option>
+                                    <option value={2}>2</option>
+                                    <option value={3}>3</option>
+                                  </select>
+                                  <button
+                                    type="button"
+                                    className="admin-btn-outline"
+                                    disabled={isSaving}
+                                    onClick={() => handleSaveDots(event.id, p.id)}
+                                  >
+                                    Lagre
+                                  </button>
+                                  <button
+                                    type="button"
+                                    className="admin-btn-outline"
+                                    disabled={isSaving}
+                                    onClick={() => handleCancelEditDots(event.id, p.id)}
+                                  >
+                                    Avbryt
+                                  </button>
+                                </>
+                              ) : (
+                                <button
+                                  type="button"
+                                  className="admin-edit-icon-btn"
+                                  onClick={() => handleStartEditDots(event.id, p)}
+                                  aria-label={`Rediger dots for ${p.fullName}`}
+                                  title="Rediger dots"
+                                >
+                                  ✎
+                                </button>
+                              )}
+                            </div>
+                            {saveDotsError[key] ? <p className="admin-error-text">{saveDotsError[key]}</p> : null}
+                          </li>
+                        );
+                      })}
+>>>>>>> Stashed changes
                     </ul>
                   )}
                 </div>

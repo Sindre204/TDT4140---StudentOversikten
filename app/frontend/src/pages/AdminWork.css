@@ -1,0 +1,169 @@
+.admin-work-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 60px 20px;
+}
+
+.admin-work-hero {
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+.admin-work-hero-left {
+  text-align: left;
+}
+
+.admin-work-kicker {
+  color: var(--accent);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.85rem;
+  margin: 0 0 8px;
+}
+
+.admin-work-hero h1 {
+  font-size: 2.5rem;
+  margin: 0 0 8px;
+}
+
+.admin-work-hero p {
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.admin-work-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.admin-work-card,
+.admin-simple-list-card,
+.admin-user-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: var(--card-shadow);
+}
+
+.admin-work-card h2,
+.admin-simple-list-card h2,
+.admin-user-card h2 {
+  margin: 0 0 10px;
+  font-size: 1.2rem;
+}
+
+.admin-work-card p,
+.admin-simple-list-card p,
+.admin-user-card p {
+  margin: 0 0 12px;
+  color: var(--text-muted);
+}
+
+.admin-work-button,
+.admin-work-secondary-button {
+  border: 1px solid var(--accent);
+  border-radius: 10px;
+  padding: 8px 14px;
+  text-decoration: none;
+  display: inline-block;
+  background: transparent;
+  color: var(--accent);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.admin-work-button:hover,
+.admin-work-secondary-button:hover {
+  background: var(--accent);
+  color: white;
+}
+
+.admin-simple-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.admin-simple-list-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.admin-user-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.admin-user-registration-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.admin-user-registration-list li {
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.admin-user-registration-meta {
+  display: block;
+  color: var(--text-muted);
+}
+
+.admin-user-registration-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.admin-user-registration-actions select {
+  border-radius: 8px;
+  padding: 5px;
+  border: 1px solid var(--border-color);
+}
+
+.admin-work-icon-button {
+  border: 1px solid var(--border-color);
+  background: var(--bg-body);
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+}
+
+.admin-work-error {
+  color: #b91c1c;
+  margin-top: 12px;
+}
+
+.admin-work-error.small {
+  width: 100%;
+  margin: 0;
+  font-size: 0.85rem;
+}
+
+@media (max-width: 900px) {
+  .admin-work-grid,
+  .admin-user-list {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-simple-list-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

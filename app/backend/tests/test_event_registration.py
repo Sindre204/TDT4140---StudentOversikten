@@ -27,6 +27,12 @@ class EventRegistrationTests(APITestCase):
             email="other-company@example.com",
         )
         self.other_company_user.groups.add(company_group)
+        self.admin_user = User.objects.create_user(
+            username="admin@example.com",
+            password="password123",
+            email="admin@example.com",
+            is_staff=True,
+        )
         self.event = Event.objects.create(
             title="Test Event",
             category="Sosialt",
@@ -80,22 +86,24 @@ class EventRegistrationTests(APITestCase):
         self.assertFalse(Registration.objects.filter(user=self.user, event=self.event).exists())
 
     def test_owner_company_can_view_event_registrations(self):
-        Registration.objects.create(user=self.user, event=self.event)
+        Registration.objects.create(user=self.user, event=self.event, dots=2)
         url = f"/api/events/{self.event.id}/registrations/?company_user_id={self.company_user.id}"
         response = self.client.get(url, format="json")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["registrations_count"], 1)
         self.assertEqual(response.data["participants"][0]["id"], self.user.id)
+        self.assertEqual(response.data["participants"][0]["dots"], 2)
 
     def test_public_can_view_event_participants(self):
-        Registration.objects.create(user=self.user, event=self.event)
+        Registration.objects.create(user=self.user, event=self.event, dots=1)
         url = f"/api/events/{self.event.id}/participants/"
         response = self.client.get(url, format="json")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["registrations_count"], 1)
         self.assertEqual(response.data["participants"][0]["email"], self.user.email)
+        self.assertEqual(response.data["participants"][0]["dots"], 1)
 
     def test_other_company_cannot_view_event_registrations(self):
         url = f"/api/events/{self.event.id}/registrations/?company_user_id={self.other_company_user.id}"
@@ -112,5 +120,85 @@ class EventRegistrationTests(APITestCase):
     def test_company_user_cannot_register_for_event(self):
         url = f"/api/events/{self.event.id}/register/"
         response = self.client.post(url, {"user_id": self.company_user.id}, format="json")
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_owner_company_can_update_registration_dots(self):
+        Registration.objects.create(user=self.user, event=self.event, dots=0)
+        url = f"/api/events/{self.event.id}/registrations/{self.user.id}/dots/"
+        response = self.client.patch(
+            url,
+            {"company_user_id": self.company_user.id, "dots": 3},
+            format="json",
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["dots"], 3)
+        self.assertEqual(
+            Registration.objects.get(user=self.user, event=self.event).dots,
+            3,
+        )
+
+    def test_other_company_cannot_update_registration_dots(self):
+        Registration.objects.create(user=self.user, event=self.event, dots=0)
+        url = f"/api/events/{self.event.id}/registrations/{self.user.id}/dots/"
+        response = self.client.patch(
+            url,
+            {"company_user_id": self.other_company_user.id, "dots": 2},
+            format="json",
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_company_cannot_set_more_than_3_dots(self):
+        Registration.objects.create(user=self.user, event=self.event, dots=0)
+        url = f"/api/events/{self.event.id}/registrations/{self.user.id}/dots/"
+        response = self.client.patch(
+            url,
+            {"company_user_id": self.company_user.id, "dots": 4},
+            format="json",
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_admin_can_view_users_overview_with_registrations(self):
+        Registration.objects.create(user=self.user, event=self.event, dots=2)
+        url = f"/api/admin/users/?admin_user_id={self.admin_user.id}"
+        response = self.client.get(url, format="json")
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        student_payload = next(item for item in response.data if item["id"] == self.user.id)
+        self.assertEqual(student_payload["totalDots"], 2)
+        self.assertEqual(student_payload["registrations"][0]["eventId"], self.event.id)
+
+    def test_non_admin_cannot_view_users_overview(self):
+        url = f"/api/admin/users/?admin_user_id={self.company_user.id}"
+        response = self.client.get(url, format="json")
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_admin_can_update_registration_dots_from_user_overview(self):
+        Registration.objects.create(user=self.user, event=self.event, dots=0)
+        url = f"/api/admin/users/{self.user.id}/events/{self.event.id}/dots/"
+        response = self.client.patch(
+            url,
+            {"admin_user_id": self.admin_user.id, "dots": 3},
+            format="json",
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["dots"], 3)
+        self.assertEqual(
+            Registration.objects.get(user=self.user, event=self.event).dots,
+            3,
+        )
+
+    def test_non_admin_cannot_update_registration_dots_from_user_overview(self):
+        Registration.objects.create(user=self.user, event=self.event, dots=0)
+        url = f"/api/admin/users/{self.user.id}/events/{self.event.id}/dots/"
+        response = self.client.patch(
+            url,
+            {"admin_user_id": self.company_user.id, "dots": 2},
+            format="json",
+        )
 
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)

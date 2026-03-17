@@ -9,8 +9,12 @@ from .views import (
     EventRegistrationView,
     EventParticipantsView,
     EventRegistrationsForCompanyView,
+    EventRegistrationDotsUpdateView,
+    AdminUsersOverviewView,
+    AdminUserRegistrationDotsUpdateView,
     RegisterView,
     LoginView,
+    UserProfileView,
 )
 
 urlpatterns = [
@@ -19,6 +23,9 @@ urlpatterns = [
     path('events/<int:pk>/register/', EventRegistrationView.as_view()),
     path('events/<int:pk>/participants/', EventParticipantsView.as_view()),
     path('events/<int:pk>/registrations/', EventRegistrationsForCompanyView.as_view()),
+    path('events/<int:pk>/registrations/<int:user_id>/dots/', EventRegistrationDotsUpdateView.as_view()),
+    path('admin/users/', AdminUsersOverviewView.as_view()),
+    path('admin/users/<int:user_id>/events/<int:event_id>/dots/', AdminUserRegistrationDotsUpdateView.as_view()),
     path('ads/', ListingList.as_view()),
     path('ads/<int:pk>/', ListingDetail.as_view()),
     path('listing/', ListingList.as_view()),
@@ -27,4 +34,5 @@ urlpatterns = [
     path('companies/<int:pk>/', CompanyDetail.as_view()),
     path('auth/register/', RegisterView.as_view()),
     path('auth/login/', LoginView.as_view()),
+    path('auth/users/<int:pk>/', UserProfileView.as_view()),
 ]

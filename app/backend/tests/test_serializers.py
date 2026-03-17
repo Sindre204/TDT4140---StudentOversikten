@@ -1,5 +1,6 @@
 from rest_framework.test import APITestCase
 from django.contrib.auth.models import User
+from events.models import Event, Registration
 from events.serializers import (
     UserPublicSerializer,
     RegisterSerializer,
@@ -23,6 +24,7 @@ class TestSerializers(APITestCase):
 
         self.assertEqual(data["fullName"], "Test User")
         self.assertEqual(data["role"], "student")
+        self.assertEqual(data["totalDots"], 0)
         self.assertIn("email", data)
 
 
@@ -35,6 +37,40 @@ class TestSerializers(APITestCase):
         data = serializer.data
 
         self.assertEqual(data["role"], "admin")
+        self.assertEqual(data["totalDots"], 0)
+
+    def test_user_public_serializer_total_dots_sum(self):
+        company_user = User.objects.create_user(
+            username="company@example.com",
+            email="company@example.com",
+            password="password123",
+        )
+        user = User.objects.create_user(
+            username="student@example.com",
+            email="student@example.com",
+            password="password123",
+        )
+        event_one = Event.objects.create(
+            title="Event one",
+            category="Sosialt",
+            date="2026-06-01",
+            description="desc",
+            places="Oslo",
+            created_by=company_user,
+        )
+        event_two = Event.objects.create(
+            title="Event two",
+            category="Sosialt",
+            date="2026-06-02",
+            description="desc",
+            places="Oslo",
+            created_by=company_user,
+        )
+        Registration.objects.create(user=user, event=event_one, dots=1)
+        Registration.objects.create(user=user, event=event_two, dots=2)
+
+        serializer = UserPublicSerializer(user)
+        self.assertEqual(serializer.data["totalDots"], 3)
 
 
     def test_register_serializer_rejects_duplicate_email(self):

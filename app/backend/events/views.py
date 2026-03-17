@@ -168,6 +168,7 @@ def build_event_participants(event):
                 or registration.user.first_name
                 or registration.user.username
             ),
+            'dots': registration.dots,
         }
         for registration in registrations
     ]
@@ -214,6 +215,169 @@ class EventRegistrationsForCompanyView(APIView):
         return Response(build_event_participants(event), status=status.HTTP_200_OK)
 
 
+<<<<<<< Updated upstream
+=======
+def _is_admin_user(user):
+    return user.is_staff or user.is_superuser
+
+
+class EventRegistrationDotsUpdateView(APIView):
+    permission_classes = [AllowAny]
+
+    def _get_company_user(self, request):
+        company_user_id = request.data.get('company_user_id')
+        if not company_user_id:
+            raise ValidationError({'company_user_id': ['This field is required.']})
+
+        try:
+            company_user = User.objects.get(pk=company_user_id)
+        except User.DoesNotExist as exc:
+            raise ValidationError({'company_user_id': ['User does not exist.']}) from exc
+
+        if not company_user.groups.filter(name=COMPANY_GROUP_NAME).exists():
+            raise PermissionDenied('Only company users can edit event registration dots.')
+
+        return company_user
+
+    def patch(self, request, pk, user_id):
+        company_user = self._get_company_user(request)
+        event = generics.get_object_or_404(Event, pk=pk)
+
+        if event.created_by_id != company_user.id:
+            raise PermissionDenied('You can only edit registrations for your own events.')
+
+        dots = request.data.get('dots')
+        if dots in (None, ''):
+            raise ValidationError({'dots': ['This field is required.']})
+
+        try:
+            dots_value = int(dots)
+        except (TypeError, ValueError) as exc:
+            raise ValidationError({'dots': ['Dots must be an integer between 0 and 3.']}) from exc
+
+        if dots_value < 0 or dots_value > 3:
+            raise ValidationError({'dots': ['Dots must be between 0 and 3.']})
+
+        registration = generics.get_object_or_404(Registration, event=event, user_id=user_id)
+
+        if (
+            registration.user.is_staff
+            or registration.user.is_superuser
+            or registration.user.groups.filter(name=COMPANY_GROUP_NAME).exists()
+        ):
+            raise PermissionDenied('Dots can only be set for students.')
+
+        registration.dots = dots_value
+        registration.save(update_fields=['dots'])
+
+        participant = {
+            'id': registration.user.id,
+            'email': registration.user.email,
+            'fullName': (
+                registration.user.get_full_name().strip()
+                or registration.user.first_name
+                or registration.user.username
+            ),
+            'dots': registration.dots,
+        }
+        return Response(participant, status=status.HTTP_200_OK)
+
+
+class AdminUsersOverviewView(APIView):
+    permission_classes = [AllowAny]
+
+    def _get_admin_user(self, request):
+        admin_user_id = request.query_params.get('admin_user_id')
+        if not admin_user_id:
+            raise ValidationError({'admin_user_id': ['This field is required.']})
+
+        try:
+            admin_user = User.objects.get(pk=admin_user_id)
+        except User.DoesNotExist as exc:
+            raise ValidationError({'admin_user_id': ['User does not exist.']}) from exc
+
+        if not _is_admin_user(admin_user):
+            raise PermissionDenied('Only admin users can access user administration.')
+
+        return admin_user
+
+    def get(self, request):
+        self._get_admin_user(request)
+        users = User.objects.all().order_by('id')
+        users_data = []
+
+        for user in users:
+            serialized = UserPublicSerializer(user).data
+            registrations = Registration.objects.filter(user=user).select_related('event').order_by('event__date')
+            serialized['registrations'] = [
+                {
+                    'eventId': registration.event_id,
+                    'eventTitle': registration.event.title,
+                    'eventDate': registration.event.date,
+                    'dots': registration.dots,
+                }
+                for registration in registrations
+            ]
+            users_data.append(serialized)
+
+        return Response(users_data, status=status.HTTP_200_OK)
+
+
+class AdminUserRegistrationDotsUpdateView(APIView):
+    permission_classes = [AllowAny]
+
+    def _get_admin_user(self, request):
+        admin_user_id = request.data.get('admin_user_id')
+        if not admin_user_id:
+            raise ValidationError({'admin_user_id': ['This field is required.']})
+
+        try:
+            admin_user = User.objects.get(pk=admin_user_id)
+        except User.DoesNotExist as exc:
+            raise ValidationError({'admin_user_id': ['User does not exist.']}) from exc
+
+        if not _is_admin_user(admin_user):
+            raise PermissionDenied('Only admin users can edit dots from user administration.')
+
+        return admin_user
+
+    def patch(self, request, user_id, event_id):
+        self._get_admin_user(request)
+        dots = request.data.get('dots')
+        if dots in (None, ''):
+            raise ValidationError({'dots': ['This field is required.']})
+
+        try:
+            dots_value = int(dots)
+        except (TypeError, ValueError) as exc:
+            raise ValidationError({'dots': ['Dots must be an integer between 0 and 3.']}) from exc
+
+        if dots_value < 0 or dots_value > 3:
+            raise ValidationError({'dots': ['Dots must be between 0 and 3.']})
+
+        registration = generics.get_object_or_404(Registration, user_id=user_id, event_id=event_id)
+        if (
+            registration.user.is_staff
+            or registration.user.is_superuser
+            or registration.user.groups.filter(name=COMPANY_GROUP_NAME).exists()
+        ):
+            raise PermissionDenied('Dots can only be set for students.')
+
+        registration.dots = dots_value
+        registration.save(update_fields=['dots'])
+
+        return Response(
+            {
+                'userId': registration.user_id,
+                'eventId': registration.event_id,
+                'dots': registration.dots,
+            },
+            status=status.HTTP_200_OK,
+        )
+
+# Generated by ChatGPT on 2026-02-15 14:30:00 UTC by Sindre Navelsaker
+# Start
+>>>>>>> Stashed changes
 
 class RegisterView(APIView):
     permission_classes = [AllowAny]
@@ -232,6 +396,14 @@ class LoginView(APIView):
         serializer = LoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
+        return Response(UserPublicSerializer(user).data, status=status.HTTP_200_OK)
+
+
+class UserProfileView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request, pk):
+        user = generics.get_object_or_404(User, pk=pk)
         return Response(UserPublicSerializer(user).data, status=status.HTTP_200_OK)
     
 
