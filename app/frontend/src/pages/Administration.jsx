@@ -175,13 +175,6 @@ export function Administration() {
                     <p>{eventRegistrationError[event.id]}</p>
                   ) : (
                     <ul>
-<<<<<<< Updated upstream
-                      {eventRegistrations[event.id]?.participants.map((participant) => (
-                        <li key={participant.id}>
-                          {participant.fullName} ({participant.email})
-                        </li>
-                      ))}
-=======
                       {eventRegistrations[event.id]?.participants.map((p) => {
                         const key = buildEditKey(event.id, p.id);
                         const isEditing = Boolean(editingDots[key]);
@@ -191,7 +184,7 @@ export function Administration() {
                           <li key={p.id} className="admin-participant-row">
                             <div>
                               <span>{p.fullName} ({p.email})</span>
-                              <span className="admin-dots-label">Dots: {participantDots}</span>
+                              <span className="admin-dots-label">{t("dots")}: {participantDots}</span>
                             </div>
                             <div className="admin-dots-actions">
                               {isEditing ? (
@@ -217,7 +210,7 @@ export function Administration() {
                                     disabled={isSaving}
                                     onClick={() => handleSaveDots(event.id, p.id)}
                                   >
-                                    Lagre
+                                    {t("save")}
                                   </button>
                                   <button
                                     type="button"
@@ -225,7 +218,7 @@ export function Administration() {
                                     disabled={isSaving}
                                     onClick={() => handleCancelEditDots(event.id, p.id)}
                                   >
-                                    Avbryt
+                                    {t("cancel")}
                                   </button>
                                 </>
                               ) : (
@@ -234,7 +227,7 @@ export function Administration() {
                                   className="admin-edit-icon-btn"
                                   onClick={() => handleStartEditDots(event.id, p)}
                                   aria-label={`Rediger dots for ${p.fullName}`}
-                                  title="Rediger dots"
+                                  title={`${t("edit")} ${t("dots").toLowerCase()}`}
                                 >
                                   ✎
                                 </button>
@@ -244,7 +237,6 @@ export function Administration() {
                           </li>
                         );
                       })}
->>>>>>> Stashed changes
                     </ul>
                   )}
                 </div>

@@ -24,11 +24,7 @@
   "email": "E-post",
   "role": "Rolle",
   "logOut": "Logg ut",
-<<<<<<< Updated upstream
-=======
   "dots": "Prikker",
-
->>>>>>> Stashed changes
   "createUser": "Lag ny bruker",
   "createUserSubtitle": "Opprett en konto for å komme i gang",
   "fullNamePlaceholder": "Ditt fulle navn",
@@ -107,6 +103,8 @@
   "showRegistrations": "Vis påmeldte",
   "hideRegistrations": "Skjul påmeldte",
   "edit": "Rediger",
+  "save": "Lagre",
+  "cancel": "Avbryt",
   "loadingRegistrations": "Laster...",
   "editEvent": "Rediger arrangement",
   "createEventTitle": "Opprett arrangement",

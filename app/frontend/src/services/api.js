@@ -151,8 +151,6 @@ export async function fetchEventRegistrationsForCompany(eventId, companyUserId) 
   return requestJson(query);
 }
 
-<<<<<<< Updated upstream
-=======
 export async function updateEventRegistrationDots(eventId, studentUserId, companyUserId, dots) {
   const response = await fetch(`${BASE_URL}/events/${eventId}/registrations/${studentUserId}/dots/`, {
     method: "PATCH",
@@ -189,4 +187,3 @@ export async function updateDotsFromAdminUsersOverview(adminUserId, studentUserI
   return parseResponse(response);
 }
 // End
->>>>>>> Stashed changes

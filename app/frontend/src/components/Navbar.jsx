@@ -52,11 +52,7 @@ export function Navbar() {
                   {user.role === "company" ? (
                     <Link to="/administration" role="button" className="btn-admin-nav">{t("administration")}</Link>
                   ) : (
-<<<<<<< Updated upstream
-                    <a href="http://127.0.0.1:8000/admin/" role="button" className="btn-admin-nav">{t("adminLabel")}</a>
-=======
-                    <Link to='/admin-work' className="btn-admin-nav">Administrator Arbeid</Link>
->>>>>>> Stashed changes
+                    <Link to="/admin-work" role="button" className="btn-admin-nav">administrator arbeid</Link>
                   )}
                 </div>
               )}

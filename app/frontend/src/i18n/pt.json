@@ -24,11 +24,7 @@
   "email": "E-mail",
   "role": "Função",
   "logOut": "Sair",
-<<<<<<< Updated upstream
-=======
   "dots": "Pontos",
-
->>>>>>> Stashed changes
   "createUser": "Criar novo utilizador",
   "createUserSubtitle": "Crie uma conta para começar",
   "fullNamePlaceholder": "O seu nome completo",
@@ -107,6 +103,8 @@
   "showRegistrations": "Mostrar inscritos",
   "hideRegistrations": "Ocultar inscritos",
   "edit": "Editar",
+  "save": "Guardar",
+  "cancel": "Cancelar",
   "loadingRegistrations": "A carregar...",
   "editEvent": "Editar evento",
   "createEventTitle": "Criar evento",
