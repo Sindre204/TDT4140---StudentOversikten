@@ -1,5 +1,6 @@
 import { Link, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "../context/AuthContext";
 import {
   fetchAdsByCreator,
@@ -10,8 +11,8 @@ import "./Administration.css";
 
 export function Administration() {
   const { user } = useAuth();
+  const { t } = useTranslation();
   const [events, setEvents] = useState([]);
-  const [listings, setListings] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
   const [expandedEvents, setExpandedEvents] = useState({});
@@ -26,13 +27,12 @@ export function Administration() {
     async function loadCreatedContent() {
       try {
         setIsLoading(true);
-        const [eventData, listingData] = await Promise.all([
+        const [eventData] = await Promise.all([
           fetchEventsByCreator(user.id),
           fetchAdsByCreator(user.id),
         ]);
         if (isActive) {
           setEvents(eventData);
-          setListings(listingData);
         }
       } catch (loadError) {
         if (isActive) setError(loadError.message);
@@ -41,7 +41,9 @@ export function Administration() {
       }
     }
     loadCreatedContent();
-    return () => { isActive = false; };
+    return () => {
+      isActive = false;
+    };
   }, [user]);
 
   if (!user || user.role !== "company") {
@@ -71,31 +73,34 @@ export function Administration() {
   return (
     <div className="admin-page-container">
       <header className="admin-hero">
-        <h1 className="admin-main-title">Administrasjon</h1>
-        <p className="admin-subtitle">
-          Velg hva du vil publisere. Alt du oppretter her lagres direkte i systemet.
-        </p>
+        <h1 className="admin-main-title">{t("administration")}</h1>
+        <p className="admin-subtitle">{t("administrationSubtitle")}</p>
       </header>
 
       <div className="admin-action-grid">
         <div className="admin-action-card">
-          <h2>Nytt arrangement</h2>
-          <p>Lag et nytt event for studenter.</p>
-          <Link to="/administration/events/new" className="admin-btn-primary">Opprett arrangement</Link>
+          <h2>{t("newEvent")}</h2>
+          <p>{t("newEventDescription")}</p>
+          <Link to="/administration/events/new" className="admin-btn-primary">
+            {t("createEvent")}
+          </Link>
         </div>
 
         <div className="admin-action-card">
-          <h2>Ny jobbannonse</h2>
-          <p>Publiser en ledig stilling.</p>
-          <Link to="/administration/ads/new" className="admin-btn-primary">Opprett jobbannonse</Link>
+          <h2>{t("newListing")}</h2>
+          <p>{t("newListingDescription")}</p>
+          <Link to="/administration/ads/new" className="admin-btn-primary">
+            {t("createListing")}
+          </Link>
         </div>
       </div>
 
       <section className="admin-content-section">
         <div className="admin-section-header">
-          <h2>Dine arrangementer</h2>
+          <h2>{t("yourEvents")}</h2>
         </div>
         <div className="admin-list">
+          {isLoading ? <p>{t("loadingRegistrations")}</p> : null}
           {events.map((event) => (
             <article key={event.id} className="admin-item-card">
               <div className="admin-item-info">
@@ -104,17 +109,25 @@ export function Administration() {
               </div>
               <div className="admin-item-btns">
                 <button onClick={() => handleToggleRegistrations(event.id)} className="admin-btn-outline">
-                  {expandedEvents[event.id] ? "Skjul påmeldte" : "Vis påmeldte"}
+                  {expandedEvents[event.id] ? t("hideRegistrations") : t("showRegistrations")}
                 </button>
-                <Link to={`/administration/events/${event.id}/edit`} className="admin-btn-edit">Rediger</Link>
+                <Link to={`/administration/events/${event.id}/edit`} className="admin-btn-edit">
+                  {t("edit")}
+                </Link>
               </div>
-              
+
               {expandedEvents[event.id] && (
                 <div className="admin-registration-details">
-                  {eventRegistrationLoading[event.id] ? <p>Laster...</p> : (
+                  {eventRegistrationLoading[event.id] ? (
+                    <p>{t("loadingRegistrations")}</p>
+                  ) : eventRegistrationError[event.id] ? (
+                    <p>{eventRegistrationError[event.id]}</p>
+                  ) : (
                     <ul>
-                      {eventRegistrations[event.id]?.participants.map(p => (
-                        <li key={p.id}>{p.fullName} ({p.email})</li>
+                      {eventRegistrations[event.id]?.participants.map((participant) => (
+                        <li key={participant.id}>
+                          {participant.fullName} ({participant.email})
+                        </li>
                       ))}
                     </ul>
                   )}
@@ -122,6 +135,7 @@ export function Administration() {
               )}
             </article>
           ))}
+          {error ? <p>{error}</p> : null}
         </div>
       </section>
     </div>

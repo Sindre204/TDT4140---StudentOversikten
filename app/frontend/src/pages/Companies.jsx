@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { CompanyCard } from "../components/CompanyCard";
 import { fetchCompanies } from "../services/api";
-import { useTranslation } from 'react-i18next';
 
 export function Companies() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [companies, setCompanies] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOrder, setSortOrder] = useState("asc");
@@ -18,9 +18,7 @@ export function Companies() {
       companies
         .filter((company) => {
           const query = searchTerm.toLowerCase();
-          const matchesSearch = (company.name || "").toLowerCase().includes(query);
-
-          return matchesSearch;
+          return (company.name || "").toLowerCase().includes(query);
         })
         .sort((a, b) => {
           if (sortOrder === "desc") {
@@ -33,13 +31,9 @@ export function Companies() {
 
   return (
     <>
-      
-
       <h1 className="events-header">{t("companiesTitle")}</h1>
 
-      <p className="events-subtitle">
-        {t("exploreCompanies")}
-      </p>
+      <p className="events-subtitle">{t("exploreCompanies")}</p>
 
       <div className="events-controls">
         <input
@@ -51,12 +45,12 @@ export function Companies() {
         />
 
         <select
-          aria-label="Sortering"
+          aria-label={t("sortOrder")}
           value={sortOrder}
           onChange={(event) => setSortOrder(event.target.value)}
         >
-          <option value="asc">A-Å</option>
-          <option value="desc">Å-A</option>
+          <option value="asc">{t("sortAsc")}</option>
+          <option value="desc">{t("sortDesc")}</option>
         </select>
       </div>
 
