@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-# Constants
 EVENT_CATEGORIES = [
     ('Sosialt', 'Sosialt'),
     ('Karriere', 'Karriere'),
@@ -14,8 +13,6 @@ EVENT_CATEGORIES = [
     ('Annet', 'Annet'),
 ]
 
-
-# Represents an event students can attend
 class Event(models.Model):
 
     title = models.CharField(max_length=200)
@@ -38,7 +35,6 @@ class Event(models.Model):
         return self.title
 
 
-# Represents a job advertisement or opportunity
 class Listing(models.Model):
 
     EMPLOYMENT_TYPES = [
